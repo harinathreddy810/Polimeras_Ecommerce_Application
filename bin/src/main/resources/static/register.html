@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>User Registration | Polimeraas</title>
+    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png"  type="image/x-icon">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --primary: #4b60f1;
+            --accent: #f26522;
+            --white: #ffffff;
+            --gray-light: #f0f0f0;
+            --dark: #333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #4b60f1, #b13ac6);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: var(--white);
+            border-radius: 10px;
+            display: flex;
+            width: 900px;
+            height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .left-side, .right-side {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .left-side {
+            background: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-right: 1px solid #eee;
+        }
+
+        .left-side img {
+            width: 100%;
+            max-width: 260px;
+            height: auto;
+        }
+
+        .right-side {
+            overflow-y: auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            color: var(--dark);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        input, select {
+            padding: 0.55rem 0.8rem;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        button {
+            margin-top: 0.5rem;
+            padding: 0.7rem;
+            background: linear-gradient(to right, #f26522, #d24b0d);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        #msg {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        .note {
+            margin-top: 1.2rem;
+            font-size: .8rem;
+            text-align: center;
+            color: #666;
+        }
+
+        #msg.success { color: #28a745; }
+        #msg.error   { color: #dc3545; }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+                width: 90%;
+            }
+
+            .left-side {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+
+        }
+
+        .register{
+            text-decoration: none;
+        }
+
+        .register:hover{
+            color: chocolate;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="left-side">
+        <img src="https://polimeraas.in/img/login.png" alt="Polimeraas Logo">
+    </div>
+
+    <div class="right-side">
+        <h2>Register to your account</h2>
+        <form id="registerForm" novalidate>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input id="username" name="username" required />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" required />
+            </div>
+
+            <div class="form-group">
+                <label for="firstname">First Name</label>
+                <input id="firstname" name="firstname" required />
+            </div>
+
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <input id="lastname" name="lastname" required />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" type="email" name="email" required />
+            </div>
+
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input id="phoneNumber" name="phoneNumber" maxlength="10" required />
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input id="address" name="address" required />
+            </div>
+
+            <div class="form-group">
+                <label for="state">State</label>
+                <input id="state" name="state" required />
+            </div>
+
+            <div class="form-group">
+                <label for="zipcode">Zip Code</label>
+                <input id="zipcode" name="zipcode" maxlength="6" required />
+            </div>
+
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                    <option value="" disabled selected>Select role</option>
+                    <option value="CUSTOMER">Customer</option>
+                    <option value="VENDOR">Vendor</option>
+                </select>
+            </div>
+
+            <div class="form-group checkbox-row">
+                <input type="checkbox" id="active" name="active" checked />
+                <label for="active">Active account</label>
+            </div>
+
+            <button type="submit" id="registerBtn">Create Your Account</button>
+            <div id="msg"></div>
+            <p class="note">Already have an account? <a class="register" href="login.html">Login Here</a> </p>
+        </form>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById("registerForm");
+    const msg = document.getElementById("msg");
+    const btn = document.getElementById("registerBtn");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Validate
+        const requiredFields = form.querySelectorAll("[required]");
+        let valid = true;
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) valid = false;
+        });
+
+        if (!valid) {
+            msg.textContent = "Please fill all required fields.";
+            msg.className = "error";
+            return;
+        }
+
+        // if (form.password.value !== form.confirmPassword.value) {
+        //     msg.textContent = "Passwords do not match.";
+        //     msg.className = "error";
+        //     return;
+        // }
+
+        // Prepare data
+        const payload = {
+            username: form.username.value.trim(),
+            password: form.password.value,
+            firstname: form.firstname.value.trim(),
+            lastname: form.lastname.value.trim(),
+            email: form.email.value.trim(),
+            phoneNumber: form.phoneNumber.value.trim(),
+            address: form.address.value.trim(),
+            state: form.state.value.trim(),
+            zipcode: form.zipcode.value.trim(),
+            role: form.role.value,
+            active: form.active.checked
+        };
+
+        // Submit
+        btn.disabled = true;
+        btn.textContent = "Processing...";
+
+        try {
+            const res = await fetch("/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                msg.textContent = `${data.username.toUpperCase()} successfully registered as ${data.role}`;
+                msg.className = "success";
+                form.reset();
+            } else {
+                msg.textContent = data.message || "Registration failed.";
+                msg.className = "error";
+            }
+        } catch (err) {
+            msg.textContent = `Error: ${err.message}`;
+            msg.className = "error";
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "Create Your Account";
+        }
+    });
+</script>
+
+</body>
+</html>

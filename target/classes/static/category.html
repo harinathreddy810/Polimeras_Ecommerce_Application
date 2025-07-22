@@ -1,0 +1,497 @@
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="utf-8" />&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta name="viewport" content="width=device-width,initial-scale=1">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Polimeraas – Products</title>&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png"  type="image/x-icon">&ndash;&gt;-->
+<!--&lt;!&ndash;    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">&ndash;&gt;-->
+<!--&lt;!&ndash;    <style>&ndash;&gt;-->
+<!--&lt;!&ndash;        body{font-family:Poppins,sans-serif;background:#f8f9fa}&ndash;&gt;-->
+<!--&lt;!&ndash;        .prod-img{height:160px;object-fit:cover;border-radius:.5rem}&ndash;&gt;-->
+<!--&lt;!&ndash;        :root{&#45;&#45;poly-yellow:#ffb600;&#45;&#45;poly-dark:#000;&#45;&#45;poly-gray:#f8f9fa;}&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </style>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;<div class="container py-4">&ndash;&gt;-->
+<!--&lt;!&ndash;    <h4 id="pageTitle" class="fw-bold mb-3"></h4>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div id="grid" class="row g-3"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash; cart helpers &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<script type="module" src="/js/cart.js"></script>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<script type="module">&ndash;&gt;-->
+<!--&lt;!&ndash;    import { addToCart } from '/js/cart.js';&ndash;&gt;-->
+
+<!--&lt;!&ndash;    const params = new URLSearchParams(location.search);&ndash;&gt;-->
+<!--&lt;!&ndash;    const cat    = params.get('category');&ndash;&gt;-->
+<!--&lt;!&ndash;    const q      = params.get('search');&ndash;&gt;-->
+
+<!--&lt;!&ndash;    document.getElementById('pageTitle').textContent =&ndash;&gt;-->
+<!--&lt;!&ndash;        q  ? `Results for “${q}”`&ndash;&gt;-->
+<!--&lt;!&ndash;            : cat ? cat.charAt(0) + cat.slice(1).toLowerCase()&ndash;&gt;-->
+<!--&lt;!&ndash;                : 'All Products';&ndash;&gt;-->
+
+<!--&lt;!&ndash;    /* choose endpoint */&ndash;&gt;-->
+<!--&lt;!&ndash;    let endpoint = '/api/products';&ndash;&gt;-->
+<!--&lt;!&ndash;    if (cat) endpoint += '/products/' + cat;&ndash;&gt;-->
+<!--&lt;!&ndash;    if (q)   endpoint  = '/api/products/search?keyword=' + encodeURIComponent(q);&ndash;&gt;-->
+
+<!--&lt;!&ndash;    // fetch(endpoint)&ndash;&gt;-->
+<!--&lt;!&ndash;    //     .then(r => r.json())&ndash;&gt;-->
+<!--&lt;!&ndash;    //     .then(list => {&ndash;&gt;-->
+<!--&lt;!&ndash;    //         const grid = document.getElementById('grid');&ndash;&gt;-->
+<!--&lt;!&ndash;    //         if (q) list = list.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));&ndash;&gt;-->
+<!--&lt;!&ndash;    //&ndash;&gt;-->
+<!--&lt;!&ndash;    //         list.forEach(p => grid.insertAdjacentHTML('beforeend', `&ndash;&gt;-->
+<!--&lt;!&ndash;    //     <div class="col-6 col-sm-4 col-md-3 col-lg-2">&ndash;&gt;-->
+<!--&lt;!&ndash;    //       <div class="border rounded p-2 h-100 d-flex flex-column">&ndash;&gt;-->
+<!--&lt;!&ndash;    //         <a href="product.html?id=${p.id}" class="text-reset flex-grow-1">&ndash;&gt;-->
+<!--&lt;!&ndash;    //           <img src="/api/products/${p.id}/image" class="w-100 prod-img mb-2" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    //           <div class="small fw-semibold lh-sm">${p.name}</div>&ndash;&gt;-->
+<!--&lt;!&ndash;    //         </a>&ndash;&gt;-->
+<!--&lt;!&ndash;    //         <div class="small">₹${p.price}</div>&ndash;&gt;-->
+<!--&lt;!&ndash;    //         <button class="btn btn-sm btn-outline-danger mt-auto add-btn"&ndash;&gt;-->
+<!--&lt;!&ndash;    //                 data-id="${p.id}">ADD</button>&ndash;&gt;-->
+<!--&lt;!&ndash;    //       </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    //     </div>`));&ndash;&gt;-->
+<!--&lt;!&ndash;    //     });&ndash;&gt;-->
+<!--&lt;!&ndash;    //&ndash;&gt;-->
+<!--&lt;!&ndash;    // /* delegate clicks */&ndash;&gt;-->
+<!--&lt;!&ndash;    // document.addEventListener('click', e=>{&ndash;&gt;-->
+<!--&lt;!&ndash;    //     if(e.target.matches('.add-btn')) addToCart(e.target.dataset.id);&ndash;&gt;-->
+<!--&lt;!&ndash;    // });&ndash;&gt;-->
+
+<!--&lt;!&ndash;    fetch(endpoint)&ndash;&gt;-->
+<!--&lt;!&ndash;        .then(r => r.json())&ndash;&gt;-->
+<!--&lt;!&ndash;        .then(list => {&ndash;&gt;-->
+<!--&lt;!&ndash;            const grid = document.getElementById('grid');&ndash;&gt;-->
+<!--&lt;!&ndash;            if (q) list = list.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));&ndash;&gt;-->
+<!--&lt;!&ndash;            list.forEach(p => {&ndash;&gt;-->
+<!--&lt;!&ndash;                const buttonText = (p.stockQuantity === 0) ? 'Out of Stock' : 'ADD';&ndash;&gt;-->
+<!--&lt;!&ndash;                grid.insertAdjacentHTML('beforeend', `&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="col-6 col-sm-4 col-md-3 col-lg-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                  <div class="border rounded p-2 h-100 d-flex flex-column">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a href="product.html?id=${p.id}" class="text-reset flex-grow-1">&ndash;&gt;-->
+<!--&lt;!&ndash;                      <img src="/api/products/${p.id}/image" class="w-100 prod-img mb-2" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;                      <div class="small fw-semibold lh-sm">${p.name}</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="small">₹${p.price}</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <button class="btn btn-sm btn-outline-danger mt-auto add-btn"&ndash;&gt;-->
+<!--&lt;!&ndash;                            data-id="${p.id}" ${p.stockQuantity === 0 ? 'disabled' : ''}>${buttonText}</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>`);&ndash;&gt;-->
+<!--&lt;!&ndash;            });&ndash;&gt;-->
+<!--&lt;!&ndash;        });&ndash;&gt;-->
+
+<!--&lt;!&ndash;    /* delegate clicks */&ndash;&gt;-->
+<!--&lt;!&ndash;    document.addEventListener('click', e => {&ndash;&gt;-->
+<!--&lt;!&ndash;        if(e.target.matches('.add-btn')) addToCart(e.target.dataset.id);&ndash;&gt;-->
+<!--&lt;!&ndash;    });&ndash;&gt;-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="utf-8" />-->
+<!--    <meta name="viewport" content="width=device-width,initial-scale=1">-->
+<!--    <title>Polimeraas – Products</title>-->
+<!--    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png"  type="image/x-icon">-->
+
+<!--    &lt;!&ndash; Bootstrap 5 + Material-Design Icons &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">-->
+
+<!--    <style>-->
+<!--        :root{&#45;&#45;poly-yellow:#ffb600;&#45;&#45;poly-dark:#000;&#45;&#45;poly-gray:#f8f9fa;}-->
+<!--        body{font-family:Poppins,sans-serif;background:var(&#45;&#45;poly-gray);}-->
+<!--        .navbar{background:var(&#45;&#45;poly-dark);} .navbar .nav-link{color:#fff!important;font-weight:500}-->
+<!--        .navbar .nav-link:hover{color:var(&#45;&#45;poly-yellow)!important}-->
+<!--        .btn-yellow{background:var(&#45;&#45;poly-yellow);color:#000;border:0}.btn-yellow:hover{filter:brightness(1.05)}-->
+<!--        .navbar{-->
+<!--            position: sticky;-->
+<!--            top: 0;-->
+<!--            z-index: 30;-->
+<!--        }-->
+<!--        #back{-->
+<!--            background-color: #2A6FDD ;-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        #back:hover{-->
+<!--            background-color: #2A6FDD ;-->
+<!--            color: white;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--        .prod-img{height:160px;object-fit:cover;border-radius:.5rem}-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--&lt;!&ndash; ───── NAVBAR ────────────────────────────────────────────────────────── &ndash;&gt;-->
+<!--<nav class="navbar navbar-expand-lg navbar-dark py-2">-->
+<!--    <div class="container">-->
+<!--        <a class="navbar-brand" href="index.html">-->
+<!--&lt;!&ndash;            <img src="https://polimeraas.in/img/logo.png" width="170" height="45" alt="Polimeraas">&ndash;&gt;-->
+<!--            <img src="http://localhost:8080/uploads/Polimeras-logo-white.png" width="140" height="50" alt="Polimeraas">-->
+<!--        </a>-->
+
+<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+
+<!--        <div id="mainNav" class="collapse navbar-collapse">-->
+<!--            &lt;!&ndash; search &ndash;&gt;-->
+<!--            <form id="searchForm" class="d-flex mx-lg-auto my-3 my-lg-0" style="max-width:420px;">-->
+<!--                <input id="searchInput" class="form-control rounded-0 rounded-start" placeholder="Search for products…">-->
+<!--                <button class="btn btn-yellow rounded-0 rounded-end">SEARCH</button>-->
+<!--            </form>-->
+
+<!--            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">-->
+<!--                <li class="nav-item"><a class="nav-link" href="/profile.html"><i class="mdi mdi-account"></i>&nbsp;Profile</a></li>-->
+<!--                <li class="nav-item position-relative">-->
+<!--                    <a class="nav-link" href="/user-dashboard.html"><i class="mdi mdi-cart-outline fs-4"></i></a>-->
+<!--                    <span id="cartBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
+
+<!--&lt;!&ndash; ───── MAIN CONTENT (ORIGINAL CODE UNCHANGED) ────────────────────────── &ndash;&gt;-->
+
+<!--<div class="container py-4">-->
+<!--    <button id="back" class="btn mb-3" onclick="history.back()">⬅Back</button>-->
+<!--    <h4 id="pageTitle" class="fw-bold mb-3"></h4>-->
+<!--    <div id="grid" class="row g-3"></div>-->
+<!--</div>-->
+
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+
+<!--&lt;!&ndash; cart helpers &ndash;&gt;-->
+<!--<script type="module" src="/js/cart.js"></script>-->
+
+<!--<script type="module">-->
+<!--    import { addToCart } from '/js/cart.js';-->
+
+<!--    const params = new URLSearchParams(location.search);-->
+<!--    const cat    = params.get('category');-->
+<!--    const q      = params.get('search');-->
+
+<!--    document.getElementById('pageTitle').textContent =-->
+<!--        q  ? `Results for “${q}”`-->
+<!--            : cat ? cat.charAt(0) + cat.slice(1).toLowerCase()-->
+<!--                : 'All Products';-->
+
+<!--    /* choose endpoint */-->
+<!--    let endpoint = '/api/products';-->
+<!--    if (cat) endpoint += '/products/' + cat;-->
+<!--    if (q)   endpoint  = '/api/products/search?keyword=' + encodeURIComponent(q);-->
+
+<!--    fetch(endpoint)-->
+<!--        .then(r => r.json())-->
+<!--        .then(list => {-->
+<!--            const grid = document.getElementById('grid');-->
+<!--            if (q) list = list.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));-->
+<!--            list.forEach(p => {-->
+<!--                const buttonText = (p.stockQuantity === 0) ? 'Out of Stock' : 'ADD';-->
+<!--                grid.insertAdjacentHTML('beforeend', `-->
+<!--                <div class="col-6 col-sm-4 col-md-3 col-lg-2">-->
+<!--                  <div class="border rounded p-2 h-100 d-flex flex-column">-->
+<!--                    <a href="product.html?id=${p.id}" class="text-reset flex-grow-1">-->
+<!--                      <img src="/api/products/${p.id}/image" class="w-100 prod-img mb-2" alt="">-->
+<!--                      <div class="small fw-semibold lh-sm">${p.name}</div>-->
+<!--                    </a>-->
+<!--                    <div class="small">₹${p.price}</div>-->
+<!--                    <button class="btn btn-sm btn-outline-danger mt-auto add-btn"-->
+<!--                            data-id="${p.id}" ${p.stockQuantity === 0 ? 'disabled' : ''}>${buttonText}</button>-->
+<!--                  </div>-->
+<!--                </div>`);-->
+<!--            });-->
+<!--        });-->
+
+<!--    /* delegate clicks */-->
+<!--    document.addEventListener('click', e => {-->
+<!--        if(e.target.matches('.add-btn')) addToCart(e.target.dataset.id);-->
+<!--    });-->
+
+<!--    /* search redirect (for navbar search) */-->
+<!--    document.getElementById('searchForm').addEventListener('submit', e=>{-->
+<!--        e.preventDefault();-->
+<!--        const searchQuery = document.getElementById('searchInput').value.trim();-->
+<!--        if(searchQuery) location.href = `category.html?search=${encodeURIComponent(searchQuery)}`;-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Polimeraas – Products</title>
+    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png"  type="image/x-icon">
+
+    <!-- Bootstrap 5 + Material-Design Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
+
+    <style>
+        :root{--poly-yellow:#ffb600;--poly-dark:#000;--poly-gray:#f8f9fa;}
+        body{font-family:Poppins,sans-serif;background:var(--poly-gray);}
+        .navbar{background:var(--poly-dark);} .navbar .nav-link{color:#fff!important;font-weight:500}
+        .navbar .nav-link:hover{color:var(--poly-yellow)!important}
+        .btn-yellow{background:var(--poly-yellow);color:#000;border:0}.btn-yellow:hover{filter:brightness(1.05)}
+        .navbar{
+            position: sticky;
+            top: 0;
+            z-index: 30;
+        }
+        #back{
+            background-color: #2A6FDD;
+            color: white;
+        }
+        #back:hover{
+            background-color: #2A6FDD;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Product Card Styles */
+        .prod-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .prod-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .prod-img {
+            height: 220px; /* Updated from 180px */
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .prod-card:hover .prod-img {
+            transform: scale(1.03);
+        }
+        .card-body {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .product-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        .product-price {
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 0.5rem;
+        }
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 8px 0;
+            font-weight: 500;
+            margin-top: auto;
+        }
+
+        /* Toast Notification */
+        .add-to-cart-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+            animation: fadeInOut 2.5s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Add toast notification element -->
+<div id="addToCartToast" class="add-to-cart-toast">
+    <i class="mdi mdi-check-circle"></i> Item added to cart!
+</div>
+
+<!-- ───── NAVBAR ────────────────────────────────────────────────────────── -->
+<nav class="navbar navbar-expand-lg navbar-dark py-2">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <img src="http://localhost:8080/uploads/Polimeras-logo-white.png" width="140" height="50" alt="Polimeraas">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div id="mainNav" class="collapse navbar-collapse">
+            <!-- search -->
+            <form id="searchForm" class="d-flex mx-lg-auto my-3 my-lg-0" style="max-width:420px;">
+                <input id="searchInput" class="form-control rounded-0 rounded-start" placeholder="Search for products…">
+                <button class="btn btn-yellow rounded-0 rounded-end">SEARCH</button>
+            </form>
+
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+                <li class="nav-item"><a class="nav-link" href="/profile.html"><i class="mdi mdi-account"></i>&nbsp;Profile</a></li>
+                <li class="nav-item position-relative">
+                    <a class="nav-link" href="/user-dashboard.html"><i class="mdi mdi-cart-outline fs-4"></i></a>
+                    <span id="cartBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ───── MAIN CONTENT ──────────────────────────────────────────────────── -->
+<div class="container py-4">
+    <button id="back" class="btn mb-3" onclick="history.back()">⬅ Back</button>
+    <h4 id="pageTitle" class="fw-bold mb-3"></h4>
+    <div id="grid" class="row g-3"></div> <!-- Updated from g-4 to g-3 -->
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- cart helpers -->
+<script type="module" src="/js/cart.js"></script>
+
+<script type="module">
+    import { addToCart } from '/js/cart.js';
+
+    const params = new URLSearchParams(location.search);
+    const cat    = params.get('category');
+    const q      = params.get('search');
+
+    document.getElementById('pageTitle').textContent =
+        q  ? `Results for "${q}"`
+            : cat ? cat.charAt(0) + cat.slice(1).toLowerCase()
+                : 'All Products';
+
+    /* choose endpoint */
+    let endpoint = '/api/products';
+    if (cat) endpoint += '/products/' + cat;
+    if (q)   endpoint  = '/api/products/search?keyword=' + encodeURIComponent(q);
+
+    fetch(endpoint)
+        .then(r => r.json())
+        .then(list => {
+            const grid = document.getElementById('grid');
+            if (q) list = list.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));
+
+            list.forEach(p => {
+                const buttonText = (p.stockQuantity === 0) ? 'Out of Stock' : 'ADD';
+                const mrp = p.mrp || p.price;
+                const discount = mrp > p.price ? Math.round((mrp - p.price)/mrp * 100) : 0;
+
+                grid.insertAdjacentHTML('beforeend', `
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3"> <!-- ✅ Updated -->
+        <div class="card prod-card h-100">
+            <a href="product.html?id=${p.id}" class="text-reset text-decoration-none">
+                <div class="position-relative overflow-hidden" style="height: 220px;">
+                    <img src="/api/products/${p.id}/image" class="w-100 h-100 object-fit-cover prod-img" alt="${p.name}">
+                    ${discount > 0 ? `
+                    <span class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 small">
+                        ${discount}% OFF
+                    </span>
+                    ` : ''}
+                </div>
+                <div class="card-body">
+                    <h5 class="product-name text-truncate">${p.name}</h5>
+                    <div class="d-flex align-items-baseline gap-2">
+                        <span class="product-price">₹${p.price}</span>
+                        ${discount > 0 ? `
+                        <span class="original-price">₹${mrp}</span>
+                        ` : ''}
+                    </div>
+                </div>
+            </a>
+            <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3">
+                <button class="btn btn-danger add-to-cart-btn add-btn"
+                        data-id="${p.id}"
+                        data-name="${p.name}"
+                        ${p.stockQuantity === 0 ? 'disabled' : ''}>
+                    ${buttonText}
+                </button>
+            </div>
+        </div>
+    </div>`);
+            });
+        });
+
+    /* delegate add-to-cart clicks */
+    document.addEventListener('click', async e => {
+        if(e.target.matches('.add-btn')) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const productId = e.target.dataset.id;
+            const productName = e.target.dataset.name;
+
+            try {
+                await addToCart(productId);
+
+                // Show success message
+                const toast = document.getElementById('addToCartToast');
+                toast.textContent = `✓ ${productName} added to cart!`;
+                toast.style.display = 'block';
+
+                // Hide after 2.5 seconds
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 2500);
+
+                // Update cart badge
+                const cartBadge = document.getElementById('cartBadge');
+                if (cartBadge) {
+                    const currentCount = parseInt(cartBadge.textContent) || 0;
+                    // cartBadge.textContent = currentCount + 1;
+                    cartBadge.classList.remove('d-none');
+                }
+
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                alert('Failed to add item to cart');
+            }
+        }
+    });
+
+    /* search redirect (for navbar search) */
+    document.getElementById('searchForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const searchQuery = document.getElementById('searchInput').value.trim();
+        if(searchQuery) location.href = `category.html?search=${encodeURIComponent(searchQuery)}`;
+    });
+</script>
+</body>
+</html>

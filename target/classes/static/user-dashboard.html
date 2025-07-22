@@ -1,0 +1,510 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Your Cart | Polimeraas</title>-->
+<!--    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png"  type="image/x-icon">-->
+<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    &lt;!&ndash; Material Design Icons &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">-->
+
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;poly-yellow: #ffb600;-->
+<!--            &#45;&#45;poly-dark  : #000;-->
+<!--            &#45;&#45;poly-gray  : #f8f9fa;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            font-family: "Poppins", sans-serif;-->
+<!--            background: var(&#45;&#45;poly-gray);-->
+<!--        }-->
+
+<!--        .navbar {-->
+<!--            background: var(&#45;&#45;poly-dark);-->
+<!--        }-->
+
+<!--        .navbar .nav-link {-->
+<!--            color: #fff !important;-->
+<!--            font-weight: 500;-->
+<!--        }-->
+
+<!--        .navbar .nav-link:hover {-->
+<!--            color: var(&#45;&#45;poly-yellow) !important;-->
+<!--        }-->
+
+<!--        .btn-yellow {-->
+<!--            background: var(&#45;&#45;poly-yellow);-->
+<!--            color: #000;-->
+<!--            border: 0;-->
+<!--        }-->
+
+<!--        .btn-yellow:hover {-->
+<!--            filter: brightness(1.05);-->
+<!--        }-->
+
+<!--        .card-custom {-->
+<!--            background: #fff;-->
+<!--            border-radius: .5rem;-->
+<!--            padding: 2rem;-->
+<!--            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);-->
+<!--        }-->
+
+<!--        .text-right {-->
+<!--            text-align: right;-->
+<!--        }-->
+
+<!--        .mdi {-->
+<!--            vertical-align: middle;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--&lt;!&ndash; Navbar &ndash;&gt;-->
+<!--<nav class="navbar navbar-expand-lg navbar-dark py-2">-->
+<!--    <div class="container">-->
+<!--        <a class="navbar-brand" href="/index.html">-->
+<!--            <img src="https://polimeraas.in/img/logo.png" width="160" height="52" alt="Polimeraas">-->
+<!--        </a>-->
+<!--        <div class="collapse navbar-collapse">-->
+<!--            <ul class="navbar-nav ms-auto">-->
+<!--                <li class="nav-item"><a class="nav-link" href="/index.html"><i class="mdi mdi-home"></i> Home</a></li>-->
+<!--                <li class="nav-item"><a class="nav-link" href="/profile.html"><i class="mdi mdi-account"></i> Profile</a></li>-->
+<!--                <li class="nav-item"><a class="nav-link" href="/orders.html"><i class="mdi mdi-cart"></i> Orders</a></li>-->
+<!--                <li class="nav-item"><a class="nav-link" href="/logout"><i class="mdi mdi-logout"></i> Logout</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
+
+<!--&lt;!&ndash; Main Container &ndash;&gt;-->
+<!--<div class="container py-4">-->
+<!--    <div class="card card-custom">-->
+<!--        <h3 class="mb-4 fw-bold">🛒 Your Cart</h3>-->
+
+<!--        <div class="table-responsive">-->
+<!--            <table class="table align-middle">-->
+<!--                <thead class="table-light">-->
+<!--                <tr>-->
+<!--                    <th>Product</th>-->
+<!--                    <th class="text-end">Price (₹)</th>-->
+<!--                    <th class="text-end">Quantity</th>-->
+<!--                    <th class="text-end">Subtotal (₹)</th>-->
+<!--                    <th class="text-end">Actions</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody id="cartTableBody"></tbody>-->
+<!--            </table>-->
+<!--        </div>-->
+
+<!--        <div class="d-flex justify-content-end mt-3 fw-bold fs-5">-->
+<!--            Total: ₹<span id="cartTotal" class="ms-2">0.00</span>-->
+<!--        </div>-->
+
+<!--        <div class="d-flex justify-content-end mt-4">-->
+<!--            <button id="orderBtn" class="btn btn-yellow">-->
+<!--                <i class="mdi mdi-check-bold"></i> <a style="text-decoration: none ; color: black" href="/checkout.html" >Place Order</a>-->
+<!--            </button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Bootstrap Bundle &ndash;&gt;-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+
+<!--&lt;!&ndash; Cart Logic &ndash;&gt;-->
+<!--<script type="module">-->
+<!--    const fmt = n => (n ?? 0).toFixed(2);-->
+
+<!--    async function loadCart() {-->
+<!--        try {-->
+<!--            const res = await fetch('/api/user/cart', { credentials: 'include' });-->
+<!--            if (res.status === 401) return location.href = '/login.html';-->
+<!--            if (!res.ok) throw new Error(await res.text());-->
+
+<!--            const cart = await res.json();-->
+<!--            const tbody = document.getElementById('cartTableBody');-->
+<!--            tbody.innerHTML = '';-->
+
+<!--            cart.cartItems.forEach(item => {-->
+<!--                const p = item.product;-->
+<!--                const subtotal = item.subTotal ?? p.price * item.quantity;-->
+<!--                const tr = document.createElement('tr');-->
+<!--                tr.innerHTML = `-->
+<!--                    <td>${p.name}</td>-->
+<!--                    <td class="text-end">${fmt(p.price)}</td>-->
+<!--                    <td class="text-end">${item.quantity}</td>-->
+<!--                    <td class="text-end">${fmt(subtotal)}</td>-->
+<!--                    <td class="text-end">-->
+<!--                        <button class="btn btn-sm btn-outline-danger" data-id="${p.id}">-->
+<!--                            Remove-->
+<!--                        </button>-->
+<!--                    </td>-->
+<!--                `;-->
+<!--                tbody.appendChild(tr);-->
+<!--            });-->
+
+<!--            document.getElementById('cartTotal').textContent = fmt(cart.totalAmount);-->
+<!--        } catch (err) {-->
+<!--            console.error(err);-->
+<!--            alert("Failed to load cart");-->
+<!--        }-->
+<!--    }-->
+
+<!--    async function decreaseQuantity(productId) {-->
+<!--        try {-->
+<!--            const res = await fetch(`/api/user/cart/decrease/${productId}`, {-->
+<!--                method: 'DELETE',-->
+<!--                credentials: 'include'-->
+<!--            });-->
+<!--            if (res.status === 401) return location.href = '/login.html';-->
+<!--            if (!res.ok) throw new Error(await res.text());-->
+<!--            await loadCart();-->
+<!--        } catch (err) {-->
+<!--            console.error(err);-->
+<!--            alert("Failed to remove item");-->
+<!--        }-->
+<!--    }-->
+
+<!--    document.addEventListener('click', e => {-->
+<!--        if (e.target.closest('button[data-id]')) {-->
+<!--            const id = e.target.closest('button[data-id]').dataset.id;-->
+<!--            decreaseQuantity(id);-->
+<!--        }-->
+<!--    });-->
+
+<!--    document.addEventListener('DOMContentLoaded', () => {-->
+<!--        loadCart();-->
+<!--        document.getElementById('orderBtn').addEventListener('click', () => {-->
+<!--            location.href = '/checkout.html';-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | Polimeraas</title>
+    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --poly-yellow: #ffb600;
+            --poly-yellow-hover: #e6a800;
+            --poly-dark: #000;
+            --poly-gray: #f8f9fa;
+            --poly-text: #212529;
+            --poly-text-light: #6c757d;
+            --poly-border: #dee2e6;
+            --poly-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --poly-radius: 0.5rem;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: var(--poly-gray);
+            color: var(--poly-text);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: var(--poly-dark);
+            padding: 0.75rem 1rem;
+        }
+
+        .navbar-brand img {
+            width: 140px;
+            height: auto;
+        }
+
+        .navbar .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.2s ease;
+        }
+
+        .navbar .nav-link:hover {
+            color: var(--poly-yellow) !important;
+        }
+
+        .btn-yellow {
+            background: var(--poly-yellow);
+            color: var(--poly-dark);
+            border: 0;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .btn-yellow:hover {
+            background: var(--poly-yellow-hover);
+            color: var(--poly-dark);
+        }
+
+        .card-custom {
+            background: #fff;
+            border-radius: var(--poly-radius);
+            padding: 2rem;
+            box-shadow: var(--poly-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .mdi {
+            vertical-align: middle;
+            margin-right: 0.25rem;
+        }
+
+        .table-responsive {
+            border-radius: var(--poly-radius);
+            overflow: hidden;
+            box-shadow: var(--poly-shadow);
+        }
+
+        .table thead {
+            background: var(--poly-dark);
+            color: white;
+        }
+
+        .table th {
+            font-weight: 500;
+            padding: 1rem;
+        }
+
+        .table td {
+            padding: 0.75rem 1rem;
+            vertical-align: middle;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 3rem;
+            color: var(--poly-text-light);
+        }
+
+        .cart-empty-icon {
+            font-size: 3rem;
+            color: var(--poly-text-light);
+            margin-bottom: 1rem;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            font-weight: bold;
+        }
+
+        .quantity-value {
+            margin: 0 0.75rem;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .cart-total {
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding: 1rem 0;
+            border-top: 1px solid var(--poly-border);
+        }
+
+        @media (max-width: 768px) {
+            .card-custom {
+                padding: 1.5rem;
+            }
+
+            .table th, .table td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/index.html" aria-label="Polimeraas Home">
+<!--            <img src="https://polimeraas.in/img/logo.png" alt="Polimeraas Logo">-->
+            <img src="http://localhost:8080/uploads/Polimeras-logo-white.png" width="140" height="50" alt="Polimeraas">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/index.html" aria-label="Home">
+                        <i class="mdi mdi-home" aria-hidden="true"></i>Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile.html" aria-label="Profile">
+                        <i class="mdi mdi-account" aria-hidden="true"></i>Profile
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders.html" aria-label="Orders">
+                        <i class="mdi mdi-cart" aria-hidden="true"></i>Orders
+                    </a>
+                </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="/logout" aria-label="Logout">-->
+<!--                        <i class="mdi mdi-logout" aria-hidden="true"></i>Logout-->
+<!--                    </a>-->
+<!--                </li>-->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Container -->
+<main class="container py-4">
+    <div class="card card-custom">
+        <header class="mb-4">
+            <h1 class="h3 fw-bold"><i class="mdi mdi-cart-outline" aria-hidden="true"></i> Your Cart</h1>
+        </header>
+
+        <div class="table-responsive">
+            <table class="table table-striped align-middle" aria-label="Shopping cart items">
+                <thead>
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col" class="text-end">Price (₹)</th>
+                    <th scope="col" class="text-end">Quantity</th>
+                    <th scope="col" class="text-end">Subtotal (₹)</th>
+                    <th scope="col" class="text-end">Actions</th>
+                </tr>
+                </thead>
+                <tbody id="cartTableBody">
+                <!-- Empty state -->
+                <tr id="emptyCart" style="display: none;">
+                    <td colspan="5" class="cart-empty">
+                        <div class="cart-empty-icon">
+                            <i class="mdi mdi-cart-off"></i>
+                        </div>
+                        <h3 class="h5">Your cart is empty</h3>
+                        <p>Browse our products and add items to your cart</p>
+                        <a href="/index.html" class="btn btn-yellow mt-3">Continue Shopping</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-end cart-total">
+            Total: ₹<span id="cartTotal" class="ms-2">0.00</span>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+            <a id="orderBtn" class="btn btn-yellow" href="/checkout.html">
+                <i class="mdi mdi-check-bold" aria-hidden="true"></i> Place Order
+            </a>
+        </div>
+    </div>
+</main>
+
+<!-- Bootstrap Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Cart Logic (unchanged) -->
+<script type="module">
+    const fmt = n => (n ?? 0).toFixed(2);
+
+    async function loadCart() {
+        try {
+            const res = await fetch('/api/user/cart', { credentials: 'include' });
+            if (res.status === 401) return location.href = '/login.html';
+            if (!res.ok) throw new Error(await res.text());
+
+            const cart = await res.json();
+            const tbody = document.getElementById('cartTableBody');
+            tbody.innerHTML = '';
+
+            if (cart.cartItems.length === 0) {
+                document.getElementById('emptyCart').style.display = '';
+                document.getElementById('orderBtn').style.display = 'none';
+                return;
+            }
+
+            cart.cartItems.forEach(item => {
+                const p = item.product;
+                const subtotal = item.subTotal ?? p.price * item.quantity;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${p.name}</td>
+                    <td class="text-end">${fmt(p.price)}</td>
+                    <td class="text-end">${item.quantity}</td>
+                    <td class="text-end">${fmt(subtotal)}</td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-outline-danger" data-id="${p.id}">
+                            Remove
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('cartTotal').textContent = fmt(cart.totalAmount);
+        } catch (err) {
+            console.error(err);
+            alert("Failed to load cart");
+        }
+    }
+
+    async function decreaseQuantity(productId) {
+        try {
+            const res = await fetch(`/api/user/cart/decrease/${productId}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            if (res.status === 401) return location.href = '/login.html';
+            if (!res.ok) throw new Error(await res.text());
+            await loadCart();
+        } catch (err) {
+            console.error(err);
+            alert("Failed to remove item");
+        }
+    }
+
+    document.addEventListener('click', e => {
+        if (e.target.closest('button[data-id]')) {
+            const id = e.target.closest('button[data-id]').dataset.id;
+            decreaseQuantity(id);
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadCart();
+    });
+</script>
+</body>
+</html>

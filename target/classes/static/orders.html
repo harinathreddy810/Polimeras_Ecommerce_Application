@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>My Orders – Polimeraas</title>
+  <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png" type="image/x-icon">
+
+  <!-- Bootstrap + Material Design Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --poly-yellow: #ffb600;
+      --poly-dark: #000;
+      --poly-gray: #f8f9fa;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--poly-gray);
+    }
+
+    .navbar {
+      background: var(--poly-dark);
+    }
+
+    .navbar .nav-link {
+      color: #fff !important;
+      font-weight: 500;
+    }
+
+    .navbar .nav-link:hover {
+      color: var(--poly-yellow) !important;
+    }
+
+    .order-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .order-card .badge {
+      font-size: 0.85rem;
+      padding: 0.4em 0.6em;
+    }
+
+    .btn-yellow {
+      background: var(--poly-yellow);
+      color: #000;
+      border: none;
+    }
+
+    .btn-yellow:hover {
+      filter: brightness(1.05);
+    }
+
+    .order-link {
+      text-decoration: none;
+      font-weight: 500;
+      color: #007bff;
+    }
+
+    .order-link:hover {
+      text-decoration: none;
+      color: black;
+    }
+
+    .text-small {
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark py-2">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+<!--      <img src="https://polimeraas.in/img/logo.png" width="170" height="55" alt="Polimeraas">-->
+      <img src="http://localhost:8080/uploads/Polimeras-logo-white.png" width="140" height="50" alt="Polimeraas">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="mainNav" class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+        <li class="nav-item"><a class="nav-link" href="/profile.html"><i class="mdi mdi-account"></i>&nbsp;Profile</a></li>
+        <li class="nav-item position-relative">
+          <a class="nav-link" href="/user-dashboard.html"><i class="mdi mdi-cart-outline fs-4"></i></a>
+          <span id="cartBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="container py-4">
+  <h3 class="fw-bold mb-4">My Orders</h3>
+  <div id="orderList"></div>
+</main>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Orders Script -->
+<script>
+  fetch('http://localhost:8080/api/user/orders')
+          .then(res => res.json())
+          .then(orders => {
+            const container = document.getElementById('orderList');
+            orders.forEach(order => {
+              const createdDate = new Date(order.createdAt).toISOString().split('T')[0];
+              const html = `
+          <div class="order-card">
+            <div class="row">
+              <div class="col-md-4 text-small"><strong>Order #:</strong> ${order.orderNumber}</div>
+              <div class="col-md-4 text-small"><strong>Date:</strong> ${createdDate}</div>
+              <div class="col-md-4 text-small"><strong>Total:</strong> ₹${order.totalAmount.toFixed(2)}</div>
+              <div class="col-md-4 text-small mt-2"><strong>Status:</strong> <span class="badge bg-warning text-dark">${order.status}</span></div>
+              <div class="col-md-4 text-small mt-2"><strong>Payment Method:</strong> ${order.paymentMethod}</div>
+              <div class="col-md-4 text-small mt-2"><strong>Payment Status:</strong> <span class="badge bg-info text-dark">${order.paymentStatus}</span></div>
+              <div class="col-md-12 mt-3 text-end">
+                <a class="order-link" href="order-details.html?id=${order.id}"><i class="mdi mdi-eye-outline"></i> View Details</a>
+              </div>
+            </div>
+          </div>`;
+              container.insertAdjacentHTML('beforeend', html);
+            });
+          })
+          .catch(err => {
+            document.getElementById('orderList').innerHTML = `<div class="alert alert-danger">Failed to load orders.</div>`;
+            console.error('Error fetching orders:', err);
+          });
+</script>
+
+</body>
+</html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="utf-8" />-->
+<!--  <meta name="viewport" content="width=device-width,initial-scale=1">-->
+<!--  <title>My Orders – Polimeraas</title>-->
+<!--  <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png" type="image/x-icon">-->
+
+<!--  &lt;!&ndash; Bootstrap + Material Design Icons + Poppins font &ndash;&gt;-->
+<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">-->
+<!--  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">-->
+
+<!--  <style>-->
+<!--    :root {-->
+<!--      &#45;&#45;poly-yellow: #ffb600;-->
+<!--      &#45;&#45;poly-yellow-light: #fff4d6;-->
+<!--      &#45;&#45;poly-dark: #212529;-->
+<!--      &#45;&#45;poly-gray: #f8f9fa;-->
+<!--      &#45;&#45;poly-light-gray: #e9ecef;-->
+<!--      &#45;&#45;poly-dark-gray: #6c757d;-->
+<!--    }-->
+
+<!--    body {-->
+<!--      font-family: "Poppins", sans-serif;-->
+<!--      background: var(&#45;&#45;poly-gray);-->
+<!--      color: var(&#45;&#45;poly-dark);-->
+<!--      line-height: 1.6;-->
+<!--    }-->
+
+<!--    .navbar {-->
+<!--      background: var(&#45;&#45;poly-dark);-->
+<!--      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);-->
+<!--    }-->
+
+<!--    .navbar-brand img {-->
+<!--      transition: opacity 0.2s;-->
+<!--    }-->
+
+<!--    .navbar-brand:hover img {-->
+<!--      opacity: 0.9;-->
+<!--    }-->
+
+<!--    .navbar .nav-link {-->
+<!--      color: #fff !important;-->
+<!--      font-weight: 500;-->
+<!--      transition: all 0.2s;-->
+<!--      padding: 0.5rem 1rem;-->
+<!--    }-->
+
+<!--    .navbar .nav-link:hover {-->
+<!--      color: var(&#45;&#45;poly-yellow) !important;-->
+<!--      transform: translateY(-1px);-->
+<!--    }-->
+
+<!--    .order-card {-->
+<!--      background: #fff;-->
+<!--      border-radius: 10px;-->
+<!--      padding: 1.5rem;-->
+<!--      margin-bottom: 1.25rem;-->
+<!--      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);-->
+<!--      transition: transform 0.2s, box-shadow 0.2s;-->
+<!--      border: 1px solid var(&#45;&#45;poly-light-gray);-->
+<!--    }-->
+
+<!--    .order-card:hover {-->
+<!--      transform: translateY(-2px);-->
+<!--      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);-->
+<!--    }-->
+
+<!--    .badge {-->
+<!--      font-size: 0.85rem;-->
+<!--      padding: 0.4em 0.75em;-->
+<!--      font-weight: 500;-->
+<!--      letter-spacing: 0.5px;-->
+<!--    }-->
+
+<!--    .badge-warning {-->
+<!--      background-color: var(&#45;&#45;poly-yellow-light);-->
+<!--      color: #856404;-->
+<!--    }-->
+
+<!--    .badge-info {-->
+<!--      background-color: #d1ecf1;-->
+<!--      color: #0c5460;-->
+<!--    }-->
+
+<!--    .badge-success {-->
+<!--      background-color: #d4edda;-->
+<!--      color: #155724;-->
+<!--    }-->
+
+<!--    .badge-danger {-->
+<!--      background-color: #f8d7da;-->
+<!--      color: #721c24;-->
+<!--    }-->
+
+<!--    .order-link {-->
+<!--      display: inline-flex;-->
+<!--      align-items: center;-->
+<!--      gap: 0.5rem;-->
+<!--      text-decoration: none;-->
+<!--      font-weight: 500;-->
+<!--      color: var(&#45;&#45;poly-dark);-->
+<!--      transition: color 0.2s;-->
+<!--    }-->
+
+<!--    .order-link:hover {-->
+<!--      color: var(&#45;&#45;poly-yellow);-->
+<!--      text-decoration: none;-->
+<!--    }-->
+
+<!--    .text-small {-->
+<!--      font-size: 0.9rem;-->
+<!--      color: var(&#45;&#45;poly-dark-gray);-->
+<!--    }-->
+
+<!--    .order-meta {-->
+<!--      display: flex;-->
+<!--      flex-wrap: wrap;-->
+<!--      gap: 1rem 2rem;-->
+<!--      margin-bottom: 1rem;-->
+<!--    }-->
+
+<!--    .order-meta-item {-->
+<!--      flex: 1 1 200px;-->
+<!--    }-->
+
+<!--    .order-meta-label {-->
+<!--      display: block;-->
+<!--      font-size: 0.8rem;-->
+<!--      color: var(&#45;&#45;poly-dark-gray);-->
+<!--      margin-bottom: 0.25rem;-->
+<!--    }-->
+
+<!--    .order-meta-value {-->
+<!--      font-weight: 500;-->
+<!--      color: var(&#45;&#45;poly-dark);-->
+<!--    }-->
+
+<!--    .order-actions {-->
+<!--      border-top: 1px solid var(&#45;&#45;poly-light-gray);-->
+<!--      padding-top: 1rem;-->
+<!--      margin-top: 1rem;-->
+<!--    }-->
+
+<!--    .empty-state {-->
+<!--      text-align: center;-->
+<!--      padding: 3rem;-->
+<!--      background: white;-->
+<!--      border-radius: 10px;-->
+<!--      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);-->
+<!--    }-->
+
+<!--    .empty-state-icon {-->
+<!--      font-size: 3rem;-->
+<!--      color: var(&#45;&#45;poly-light-gray);-->
+<!--      margin-bottom: 1rem;-->
+<!--    }-->
+
+<!--    @media (max-width: 767.98px) {-->
+<!--      .order-card {-->
+<!--        padding: 1.25rem;-->
+<!--      }-->
+
+<!--      .order-meta-item {-->
+<!--        flex: 1 1 100%;-->
+<!--      }-->
+<!--    }-->
+<!--  </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--&lt;!&ndash; NAVBAR &ndash;&gt;-->
+<!--<nav class="navbar navbar-expand-lg navbar-dark py-2">-->
+<!--  <div class="container">-->
+<!--    <a class="navbar-brand" href="index.html">-->
+<!--      <img src="https://polimeraas.in/img/logo.png" width="170" height="55" alt="Polimeraas">-->
+<!--    </a>-->
+<!--    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--      <span class="navbar-toggler-icon"></span>-->
+<!--    </button>-->
+<!--    <div id="mainNav" class="collapse navbar-collapse">-->
+<!--      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">-->
+<!--        <li class="nav-item"><a class="nav-link" href="/user-dashboard.html"><i class="mdi mdi-account" aria-hidden="true"></i>&nbsp;Profile</a></li>-->
+<!--        <li class="nav-item position-relative">-->
+<!--          <a class="nav-link" href="/user-dashboard.html" aria-label="Shopping cart">-->
+<!--            <i class="mdi mdi-cart-outline fs-4"></i>-->
+<!--            <span id="cartBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--      </ul>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</nav>-->
+
+<!--&lt;!&ndash; MAIN CONTENT &ndash;&gt;-->
+<!--<main class="container py-4">-->
+<!--  <div class="d-flex justify-content-between align-items-center mb-4">-->
+<!--    <h1 class="h3 fw-bold mb-0">My Orders</h1>-->
+<!--    <a href="/" class="btn btn-outline-dark">-->
+<!--      <i class="mdi mdi-arrow-left" aria-hidden="true"></i> Continue Shopping-->
+<!--    </a>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; Loading state (will be replaced by JavaScript) &ndash;&gt;-->
+<!--  <div id="orderList">-->
+<!--    <div class="text-center py-5">-->
+<!--      <div class="spinner-border text-warning" role="status">-->
+<!--        <span class="visually-hidden">Loading...</span>-->
+<!--      </div>-->
+<!--      <p class="mt-3">Loading your orders...</p>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; Empty state template (hidden by default) &ndash;&gt;-->
+<!--  <div id="emptyState" class="empty-state d-none">-->
+<!--    <div class="empty-state-icon">-->
+<!--      <i class="mdi mdi-package-variant" aria-hidden="true"></i>-->
+<!--    </div>-->
+<!--    <h3 class="h5 mb-2">No orders yet</h3>-->
+<!--    <p class="text-muted mb-4">Your order history will appear here once you make a purchase</p>-->
+<!--    <a href="/" class="btn btn-warning">-->
+<!--      <i class="mdi mdi-cart" aria-hidden="true"></i> Start Shopping-->
+<!--    </a>-->
+<!--  </div>-->
+<!--</main>-->
+
+<!--&lt;!&ndash; Bootstrap JS &ndash;&gt;-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+
+<!--&lt;!&ndash; Orders Script (unchanged from original) &ndash;&gt;-->
+<!--<script>-->
+<!--  fetch('http://localhost:8080/api/user/orders')-->
+<!--          .then(res => res.json())-->
+<!--          .then(orders => {-->
+<!--            const container = document.getElementById('orderList');-->
+<!--            orders.forEach(order => {-->
+<!--              const createdDate = new Date(order.createdAt).toISOString().split('T')[0];-->
+<!--              const html = `-->
+<!--          <div class="order-card">-->
+<!--            <div class="order-meta">-->
+<!--              <div class="order-meta-item">-->
+<!--                <span class="order-meta-label">Order #</span>-->
+<!--                <span class="order-meta-value">${order.orderNumber}</span>-->
+<!--              </div>-->
+<!--              <div class="order-meta-item">-->
+<!--                <span class="order-meta-label">Date</span>-->
+<!--                <span class="order-meta-value">${createdDate}</span>-->
+<!--              </div>-->
+<!--              <div class="order-meta-item">-->
+<!--                <span class="order-meta-label">Total</span>-->
+<!--                <span class="order-meta-value">₹${order.totalAmount.toFixed(2)}</span>-->
+<!--              </div>-->
+<!--              <div class="order-meta-item">-->
+<!--                <span class="order-meta-label">Status</span>-->
+<!--                <span class="badge badge-warning">${order.status}</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="order-actions text-end">-->
+<!--              <a class="order-link" href="order-details.html?id=${order.id}" aria-label="View order details">-->
+<!--                <i class="mdi mdi-eye-outline" aria-hidden="true"></i> View Details-->
+<!--              </a>-->
+<!--            </div>-->
+<!--          </div>`;-->
+<!--              container.insertAdjacentHTML('beforeend', html);-->
+<!--            });-->
+<!--          })-->
+<!--          .catch(err => {-->
+<!--            document.getElementById('orderList').innerHTML = `<div class="alert alert-danger">Failed to load orders.</div>`;-->
+<!--            console.error('Error fetching orders:', err);-->
+<!--          });-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->

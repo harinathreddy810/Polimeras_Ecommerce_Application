@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile | Polimeraas</title>
+    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png"  type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --poly-yellow: #ffb600;
+            --poly-dark: #000;
+            --poly-gray: #f8f9fa;
+        }
+        body {
+            font-family: "Poppins", sans-serif;
+            background-color: var(--poly-gray);
+        }
+        .navbar {
+            background: var(--poly-dark);
+        }
+        .navbar .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+        .navbar .nav-link:hover {
+            color: var(--poly-yellow) !important;
+        }
+        .card-profile {
+            background: #fff;
+            border-radius: .5rem;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .profile-label {
+            font-weight: 600;
+            color: #555;
+        }
+        .mdi {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark py-2">
+    <div class="container">
+        <a class="navbar-brand" href="/index.html">
+            <img src="https://polimeraas.in/img/logo.png" width="160" height="52" alt="Polimeraas">
+        </a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/index.html"><i class="mdi mdi-home"></i> Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/user-dashboard.html"><i class="mdi mdi-cart"></i> Cart</a></li>
+                <li class="nav-item"><a class="nav-link" href="/checkout.html"><i class="mdi mdi-receipt"></i> Orders</a></li>
+                <li class="nav-item"><a class="nav-link" href="/logout"><i class="mdi mdi-logout"></i> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN -->
+<div class="container py-5">
+    <div class="card card-profile">
+        <h2 class="mb-4 fw-bold">👤 User Profile</h2>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <p><span class="profile-label">Username:</span> <span id="username">–</span></p>
+                <p><span class="profile-label">Email:</span> <span id="email">–</span></p>
+                <p><span class="profile-label">Phone Number:</span> <span id="phone">–</span></p>
+            </div>
+            <div class="col-md-6">
+                <p><span class="profile-label">Full Name:</span> <span id="fullName">–</span></p>
+                <p><span class="profile-label">Role:</span> <span id="role">–</span></p>
+                <p><span class="profile-label">Status:</span> <span id="status" class="fw-semibold">–</span></p>
+            </div>
+        </div>
+
+        <h5 class="mt-4 mb-3 fw-bold">📍 Address</h5>
+        <div class="row">
+            <div class="col-md-4">
+                <p><span class="profile-label">City:</span> <span id="city">–</span></p>
+            </div>
+            <div class="col-md-4">
+                <p><span class="profile-label">State:</span> <span id="state">–</span></p>
+            </div>
+            <div class="col-md-4">
+                <p><span class="profile-label">Zipcode:</span> <span id="zipcode">–</span></p>
+            </div>
+            <div class="col-md-12">
+                <p><span class="profile-label">Full Address:</span> <span id="address">–</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    async function loadUserProfile() {
+        try {
+            const res = await fetch('/api/user/profile', { credentials: 'include' });
+            if (!res.ok) throw new Error(await res.text());
+
+            const user = await res.json();
+
+            document.getElementById('username').textContent = user.username;
+            document.getElementById('email').textContent = user.email;
+            document.getElementById('phone').textContent = user.phoneNumber || 'N/A';
+            document.getElementById('fullName').textContent = `${user.firstname} ${user.lastname}`;
+            document.getElementById('role').textContent = user.role;
+            document.getElementById('status').textContent = user.active ? 'Active' : 'Inactive';
+            document.getElementById('status').classList.add(user.active ? 'text-success' : 'text-danger');
+            document.getElementById('city').textContent = user.city;
+            document.getElementById('state').textContent = user.state;
+            document.getElementById('zipcode').textContent = user.zipcode;
+            document.getElementById('address').textContent = user.address;
+        } catch (err) {
+            console.error(err);
+            alert("Could not load profile.");
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadUserProfile);
+</script>
+
+</body>
+</html>

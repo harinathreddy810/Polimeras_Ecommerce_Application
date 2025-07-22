@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice - Polimeraas</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 40px;
+            color: #000;
+        }
+        .header-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header-logo img {
+            width: 160px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            margin-bottom: 10px;
+        }
+        .order-summary, .customer-info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .summary-box {
+            margin: 10px 0;
+            flex: 1;
+            min-width: 250px;
+        }
+        .highlight {
+            display: inline-block;
+            background-color: #fff3cd;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .label {
+            font-weight: bold;
+        }
+        .info-block {
+            margin-bottom: 10px;
+        }
+        hr {
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-logo">
+    <img src="http://localhost:8080/uploads/Polimeras-logo-black.png" alt="Polimeraas Logo">
+</div>
+
+<h2 style="text-align:center;">Order <span class="highlight">#ORD-0C3F69CF</span></h2>
+
+<div class="order-summary section">
+    <div class="summary-box">
+        <div class="info-block"><span class="label">Order Date:</span> 16/7/2025, 8:35:03 pm</div>
+        <div class="info-block"><span class="label">Payment Status:</span> <span class="highlight">PAID</span></div>
+    </div>
+    <div class="summary-box">
+        <div class="info-block"><span class="label">Status:</span> <span class="highlight">CONFIRMED</span></div>
+        <div class="info-block"><span class="label">Total Amount:</span> ₹27.49</div>
+    </div>
+    <div class="summary-box">
+        <div class="info-block"><span class="label">Payment Method:</span> ONLINE</div>
+    </div>
+</div>
+
+<hr>
+
+<div class="customer-info section">
+    <h2>Shipping Address</h2>
+    <div class="info-block">789 Oak Ave</div>
+</div>
+
+<div class="customer-info section">
+    <h2>Customer Information</h2>
+    <div class="info-block"><span class="label">Name:</span> Vineet Kumar</div>
+    <div class="info-block"><span class="label">Phone:</span> 9876543210</div>
+    <div class="info-block"><span class="label">Address:</span> 789 Oak Ave, Nizamabad, Telangana - 503001</div>
+</div>
+
+</body>
+</html>

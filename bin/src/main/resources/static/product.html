@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Product</title>
+    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png"  type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{font-family:Poppins,sans-serif;background:#f8f9fa}
+        .big-img{width:100%;max-width:420px;height:420px;object-fit:cover;border-radius:.5rem}
+        .btn-yellow{background:#ffb600;color:#000;border:0}
+    </style>
+</head>
+<body>
+<div class="container py-4">
+    <button class="btn btn-link mb-3" onclick="history.back()">&larr; Back</button>
+
+    <div class="row gy-4">
+        <div class="col-lg-5 text-center">
+            <img id="bigImage" class="big-img" alt="">
+        </div>
+        <div class="col-lg-7">
+            <h4 id="pName"  class="fw-bold"></h4>
+            <div class="mb-2"><span id="rating" class="badge text-bg-success"></span></div>
+
+            <h3 id="pPrice" class="fw-semibold"></h3>
+            <p  id="pQty"   class="text-muted"></p>
+
+            <button id="addBtn" class="btn btn-yellow btn-lg px-5">Add To Cart</button>
+
+            <hr>
+            <h6 class="fw-semibold">Description</h6>
+            <p id="pDesc" class="small"></p>
+        </div>
+    </div>
+</div>
+
+<!-- cart helpers -->
+<script type="module" src="/js/cart.js"></script>
+
+<script type="module">
+    import { addToCart } from '/js/cart.js';
+
+    const id = new URLSearchParams(location.search).get('id');
+    if (!id) location.replace('index.html');
+
+    fetch('/api/products/' + id)
+        .then(r => r.json())
+        .then(p => {
+            document.title = p.name;
+            document.getElementById('bigImage').src    = `/api/products/${p.id}/image`;
+            document.getElementById('pName').textContent  = p.name;
+            document.getElementById('pPrice').textContent = '₹' + p.price;
+            document.getElementById('pQty').textContent   = p.quantity || '';
+            document.getElementById('rating').textContent = p.rating?.toFixed(1) || '';
+            document.getElementById('pDesc').textContent  = p.description || '–';
+        })
+        .catch(()=>location.replace('index.html'));
+
+    /* single add‑to‑cart */
+    document.getElementById('addBtn')
+        .addEventListener('click', () => addToCart(id, 1));
+</script>
+</body>
+</html>

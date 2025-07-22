@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Polimeraas – The Farmers House</title>
+    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png"  type="image/x-icon">
+    <!-- 1️⃣  CSS right here -->
+    <style>
+        /* Google font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-gradient: linear-gradient(135deg,#7059ff 0%,#ba52ff 50%,#e14e89 100%);
+            --btn: #e25a14;
+            --btn-hover: #c54f12;
+        }
+
+        * { box-sizing: border-box; }
+
+        html,body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* full‑screen gradient */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-gradient);
+        }
+
+        /* white card */
+        .card {
+            width: 80%;
+            max-width: 950px;
+            display: grid;
+            grid-template-columns: 40% 60%;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,.15);
+        }
+
+        /* logo pane */
+        .logo-pane {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .logo-pane img {
+            width: 80%;
+            max-width: 220px;
+        }
+
+        /* form pane */
+        .form-pane {
+            padding: 2.5rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .form-pane h2 {
+            margin: 0 0 1.5rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 1.2rem;
+        }
+        form span {
+            display: block;
+            margin-bottom: .35rem;
+            font-size: .875rem;
+            color: #444;
+        }
+        form input {
+            width: 100%;
+            padding: .65rem .85rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: .95rem;
+        }
+        form button {
+            margin-top: .8rem;
+            width: 100%;
+            padding: .70rem 0;
+            border: none;
+            border-radius: 6px;
+            background: var(--btn);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .25s;
+        }
+        form button:hover { background: var(--btn-hover); }
+
+        .note {
+            margin-top: 1.2rem;
+            font-size: .8rem;
+            text-align: center;
+            color: #666;
+        }
+
+        /* responsive tweak */
+        @media (max-width: 730px) {
+            .card { grid-template-columns: 1fr; }
+            .logo-pane { display: none; }
+        }
+
+        .register{
+            text-decoration: none;
+        }
+
+        .register:hover{
+            color: chocolate;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- 2️⃣  HTML markup -->
+<div class="card">
+    <!-- left side: logo -->
+    <div class="logo-pane">
+<!--        <img src="https://polimeraas.in/img/login.png" alt="Polimeraas logo" />-->
+        <img src="http://localhost:8080/uploads/Polimeras-logo-black.png" alt="Polimeraas logo" />
+    </div>
+
+    <!-- right side: form -->
+    <div class="form-pane">
+        <h2>Login to your account</h2>
+
+        <!-- Spring Security handles POST /doLogin -->
+        <form th:action="@{/doLogin}" action="/doLogin" method="post">
+            <label>
+                <span>Enter Username</span>
+                <input type="text" name="username" placeholder="Username" required />
+            </label>
+
+            <label>
+                <span>Enter Password</span>
+                <input type="password" name="password" placeholder="••••••••" required />
+            </label>
+
+            <button type="submit">Login to your account</button>
+        </form>
+
+        <p class="note">New Polimeraas account? <a class="register" href="register">Register Here</a> </p>
+        <p class="note">Forgot <a class="register" href="/forgot-password">Password?</a> </p>
+        <!-- social buttons go here later -->
+    </div>
+</div>
+
+<!-- 3️⃣  Tiny JS (optional) -->
+<script>
+    // Show an alert if Spring redirects with ?error
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('error')) {
+            alert('Invalid username or password, please try again.');
+        }
+    });
+</script>
+</body>
+</html>

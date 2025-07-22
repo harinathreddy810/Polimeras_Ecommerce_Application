@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Product | Polimeraas</title>
+    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png"  type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material‑Design Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --poly-yellow: #ffb600;
+            --poly-dark  : #000;
+            --poly-gray  : #f8f9fa;
+        }
+        body { font-family:"Poppins", sans-serif; background:var(--poly-gray); padding:0px; }
+        input{ margin: 20px 0 }
+        .navbar { background:var(--poly-dark); }
+        .navbar .nav-link { color:#fff !important; font-weight:500; }
+        .navbar .nav-link:hover { color:var(--poly-yellow) !important; }
+        .btn-yellow { background:var(--poly-yellow); color:#000; border:0; }
+        .btn-yellow:hover { filter:brightness(1.05); }
+        .form-container { max-width:600px; margin:0 auto; background:#fff; padding:25px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,.1); }
+        #alertBox { display:none; }
+    </style>
+</head>
+<body>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark py-2">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/vendor-dashboard.html">
+            <img src="https://polimeraas.in/img/logo.png" width="160" height="52" alt="Polimeraas">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#vendorNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="vendorNav" class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/logout"><i class="mdi mdi-logout"></i>&nbsp;Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN -->
+<div class="container py-4">
+    <h2 class="fw-bold text-center mb-4">Update Product</h2>
+
+    <!-- Alert -->
+    <div id="alertBox" class="alert alert-success text-center" role="alert"></div>
+
+    <!-- Form -->
+    <div class="form-container" style="display:none" id="formWrapper">
+        <form id="productForm" enctype="multipart/form-data">
+            <input type="text" id="name" name="name" class="form-control" placeholder="Product Name" required>
+
+            <textarea id="description" name="description" class="form-control" placeholder="Description" required></textarea>
+
+            <input type="number" id="price" step="0.01" name="price" class="form-control" placeholder="Price" required>
+
+            <select id="category" name="category" class="form-select" required>
+                <option value="">Select Category</option>
+                <option value="VEGETABLES">VEGETABLES</option>
+                <option value="FRUITS">FRUITS</option>
+                <option value="GROCERY">Grocery</option>
+            </select>
+
+            <input type="number" id="stockQuantity" name="stockQuantity" class="form-control" placeholder="Stock Quantity" required>
+
+            <label class="form-label mt-2">Replace Image (optional)</label>
+            <input type="file" id="imageFile" name="imageFile" class="form-control" accept="image/*">
+
+            <div class="form-check mb-3 mt-3">
+                <input class="form-check-input" type="checkbox" id="active" name="active">
+                <label class="form-check-label" for="active">Active</label>
+            </div>
+
+            <button type="submit" class="btn btn-yellow w-100">Update Product</button>
+            <p id="statusTxt" class="text-center small mt-2 text-muted"></p>
+        </form>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/vendor-dashboard.html" class="btn btn-secondary">← Back to Dashboard</a>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    /* -------------- Helpers -------------- */
+    function csrfHeaders() {
+        const cookie = document.cookie.split('; ').find(r => r.startsWith('XSRF-TOKEN='));
+        return cookie ? { 'X-XSRF-TOKEN': decodeURIComponent(cookie.split('=')[1]) } : {};
+    }
+    function showAlert(msg, type='success') {
+        const box = document.getElementById('alertBox');
+        box.className = 'alert alert-' + type + ' text-center';
+        box.textContent = msg;
+        box.style.display = 'block';
+        setTimeout(()=> box.style.display='none', 3000);
+    }
+
+    /* -------------- Main Logic -------------- */
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const formWrapper = document.getElementById('formWrapper');
+    const form = document.getElementById('productForm');
+    const statusTxt = document.getElementById('statusTxt');
+
+    if(!id){
+        showAlert('No product ID provided','danger');
+    } else {
+        loadProduct(id);
+    }
+
+    async function loadProduct(id){
+        try{
+            const res = await fetch(`/api/vendor/product/${id}`);
+            if(!res.ok) throw new Error('Product not found');
+            const p = await res.json();
+            // populate fields
+            form.dataset.id = id;
+            document.getElementById('name').value          = p.name;
+            document.getElementById('description').value   = p.description;
+            document.getElementById('price').value         = p.price;
+            document.getElementById('category').value      = p.category;
+            document.getElementById('stockQuantity').value = p.stockQuantity;
+            document.getElementById('active').checked      = p.active;
+            statusTxt.textContent = 'Product loaded ✔';
+            formWrapper.style.display = 'block';
+        }catch(err){
+            console.error(err);
+            showAlert(err.message || 'Error loading product','danger');
+        }
+    }
+
+    form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const formData = new FormData(form);
+        // If image not selected remove the field to avoid overriding with empty
+        if(!document.getElementById('imageFile').files.length){
+            formData.delete('imageFile');
+        }
+        // Checkbox value handling
+        if(!formData.has('active')){
+            formData.append('active','false');
+        }
+        try{
+            statusTxt.textContent = 'Updating...';
+            const res = await fetch(`/api/vendor/product/${id}`, {
+                method: 'PUT',
+                body: formData,
+                headers: { ...csrfHeaders() }
+            });
+            if(!res.ok) throw new Error(await res.text() || 'Update failed');
+            showAlert('Product updated successfully!');
+            statusTxt.textContent = 'Updated ✔';
+            setTimeout(()=> window.location.href='/vendor-dashboard.html', 2000);
+        }catch(err){
+            console.error(err);
+            showAlert(err.message || 'Error','danger');
+            statusTxt.textContent = '';
+        }
+    });
+</script>
+</body>
+</html>

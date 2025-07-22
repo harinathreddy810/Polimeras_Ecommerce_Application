@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>400-Bad Request</title>
+    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            text-align: center;
+            transition: background 0.5s ease;
+        }
+
+        .error-container {
+            padding: 2rem;
+            max-width: 600px;
+        }
+
+        .company-logo {
+            width: 120px;
+            margin-bottom: 20px;
+        }
+
+        .error-code {
+            font-size: 7rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #8338ec, #3a86ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .error-title {
+            font-size: 2rem;
+            color: #2b2d42;
+            margin: 0.5rem 0;
+        }
+
+        .error-message {
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin: 1rem 0 2rem;
+        }
+
+        .btn-home {
+            display: inline-block;
+            background: linear-gradient(135deg, #3a86ff, #8338ec);
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(58, 134, 255, 0.4);
+        }
+
+        .illustration {
+            width: 150px;
+            margin: 20px auto;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @media (max-width: 600px) {
+            .error-code { font-size: 5rem; }
+            .error-title { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="error-container">
+    <img class="company-logo" src="http://localhost:8080/uploads/Polimeras-logo-black.png" alt="Mana Polimeras Logo">
+    <h1 class="error-code">400</h1>
+    <img class="illustration" src="https://cdn-icons-png.flaticon.com/512/3242/3242257.png" alt="Error Icon">
+    <h2 class="error-title">Bad Request</h2>
+    <p class="error-message">The server couldn't understand your request. Please check and try again.</p>
+    <a href="/" class="btn-home">Go Back Home</a>
+</div>
+</body>
+</html>

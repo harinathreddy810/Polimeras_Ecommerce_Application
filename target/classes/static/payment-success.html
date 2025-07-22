@@ -1,0 +1,523 @@
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;  <meta charset="UTF-8">&ndash;&gt;-->
+<!--&lt;!&ndash;  <title>Payment Success | Polimeraas</title>&ndash;&gt;-->
+<!--&lt;!&ndash;  <meta name="viewport" content="width=device-width, initial-scale=1.0">&ndash;&gt;-->
+
+<!--&lt;!&ndash;  <style>&ndash;&gt;-->
+<!--&lt;!&ndash;    body {&ndash;&gt;-->
+<!--&lt;!&ndash;      font-family: 'Poppins', sans-serif;&ndash;&gt;-->
+<!--&lt;!&ndash;      background-color: #f4fff7;&ndash;&gt;-->
+<!--&lt;!&ndash;      margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;      padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;      text-align: center;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    .container {&ndash;&gt;-->
+<!--&lt;!&ndash;      margin-top: 100px;&ndash;&gt;-->
+<!--&lt;!&ndash;      background: #fff;&ndash;&gt;-->
+<!--&lt;!&ndash;      padding: 40px;&ndash;&gt;-->
+<!--&lt;!&ndash;      border-radius: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;      box-shadow: 0 5px 15px rgba(0,0,0,0.1);&ndash;&gt;-->
+<!--&lt;!&ndash;      max-width: 600px;&ndash;&gt;-->
+<!--&lt;!&ndash;      margin-left: auto;&ndash;&gt;-->
+<!--&lt;!&ndash;      margin-right: auto;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    h1 {&ndash;&gt;-->
+<!--&lt;!&ndash;      color: #2e7d32;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    .details {&ndash;&gt;-->
+<!--&lt;!&ndash;      margin-top: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;      font-size: 16px;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    .highlight {&ndash;&gt;-->
+<!--&lt;!&ndash;      color: #1b5e20;&ndash;&gt;-->
+<!--&lt;!&ndash;      font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    .btn-group {&ndash;&gt;-->
+<!--&lt;!&ndash;      margin-top: 30px;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    .btn {&ndash;&gt;-->
+<!--&lt;!&ndash;      padding: 10px 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;      text-decoration: none;&ndash;&gt;-->
+<!--&lt;!&ndash;      background-color: #ffb600;&ndash;&gt;-->
+<!--&lt;!&ndash;      color: #000;&ndash;&gt;-->
+<!--&lt;!&ndash;      border-radius: 5px;&ndash;&gt;-->
+<!--&lt;!&ndash;      margin: 0 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    .toast {&ndash;&gt;-->
+<!--&lt;!&ndash;      position: fixed;&ndash;&gt;-->
+<!--&lt;!&ndash;      top: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;      right: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;      background: #4caf50;&ndash;&gt;-->
+<!--&lt;!&ndash;      color: white;&ndash;&gt;-->
+<!--&lt;!&ndash;      padding: 15px 25px;&ndash;&gt;-->
+<!--&lt;!&ndash;      border-radius: 5px;&ndash;&gt;-->
+<!--&lt;!&ndash;      opacity: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;      transition: opacity 0.5s ease-in-out;&ndash;&gt;-->
+<!--&lt;!&ndash;      z-index: 9999;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    .toast.show {&ndash;&gt;-->
+<!--&lt;!&ndash;      opacity: 1;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+<!--&lt;!&ndash;  </style>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="toast" id="toast">🎉 Payment Successful!</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
+<!--&lt;!&ndash;  <h1>✅ Payment Successful!</h1>&ndash;&gt;-->
+<!--&lt;!&ndash;  <p class="details">Thank you <span class="highlight" id="userName">User</span>, your payment has been successfully processed.</p>&ndash;&gt;-->
+<!--&lt;!&ndash;  <p class="details"><span class="highlight">Payment ID:</span> <span id="paymentId">Loading...</span></p>&ndash;&gt;-->
+<!--&lt;!&ndash;  <p class="details"><span class="highlight">Payer ID:</span> <span id="payerId">Loading...</span></p>&ndash;&gt;-->
+
+<!--&lt;!&ndash;  <div class="btn-group">&ndash;&gt;-->
+<!--&lt;!&ndash;    <a href="/orders.html" class="btn">View Orders</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    <a href="/index.html" class="btn">Home</a>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+<!--&lt;!&ndash;  // Extract query params&ndash;&gt;-->
+<!--&lt;!&ndash;  const queryParams = new URLSearchParams(window.location.search);&ndash;&gt;-->
+<!--&lt;!&ndash;  const paymentId = queryParams.get("paymentId");&ndash;&gt;-->
+<!--&lt;!&ndash;  const payerId = queryParams.get("PayerID");&ndash;&gt;-->
+<!--&lt;!&ndash;  const name = queryParams.get("name");&ndash;&gt;-->
+
+<!--&lt;!&ndash;  // Display in DOM&ndash;&gt;-->
+<!--&lt;!&ndash;  document.getElementById("paymentId").textContent = paymentId || "N/A";&ndash;&gt;-->
+<!--&lt;!&ndash;  document.getElementById("payerId").textContent = payerId || "N/A";&ndash;&gt;-->
+<!--&lt;!&ndash;  document.getElementById("userName").textContent = name || "Customer";&ndash;&gt;-->
+
+<!--&lt;!&ndash;  // Show toast&ndash;&gt;-->
+<!--&lt;!&ndash;  window.onload = () => {&ndash;&gt;-->
+<!--&lt;!&ndash;    const toast = document.getElementById("toast");&ndash;&gt;-->
+<!--&lt;!&ndash;    toast.classList.add("show");&ndash;&gt;-->
+<!--&lt;!&ndash;    setTimeout(() => toast.classList.remove("show"), 4000);&ndash;&gt;-->
+<!--&lt;!&ndash;  };&ndash;&gt;-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Payment Success | Polimeraas</title>-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--  <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png" type="image/x-icon">-->
+
+<!--  &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--  &lt;!&ndash; Material Design Icons &ndash;&gt;-->
+<!--  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">-->
+
+<!--  <style>-->
+<!--    :root {-->
+<!--      &#45;&#45;poly-yellow: #ffb600;-->
+<!--      &#45;&#45;poly-dark  : #000;-->
+<!--      &#45;&#45;poly-gray  : #f8f9fa;-->
+<!--    }-->
+
+<!--    body {-->
+<!--      font-family: "Poppins", sans-serif;-->
+<!--      background: var(&#45;&#45;poly-gray);-->
+<!--    }-->
+
+<!--    .navbar {-->
+<!--      background: var(&#45;&#45;poly-dark);-->
+<!--    }-->
+
+<!--    .navbar .nav-link {-->
+<!--      color: #fff !important;-->
+<!--      font-weight: 500;-->
+<!--    }-->
+
+<!--    .navbar .nav-link:hover {-->
+<!--      color: var(&#45;&#45;poly-yellow) !important;-->
+<!--    }-->
+
+<!--    .btn-yellow {-->
+<!--      background: var(&#45;&#45;poly-yellow);-->
+<!--      color: #000;-->
+<!--      border: 0;-->
+<!--    }-->
+
+<!--    .btn-yellow:hover {-->
+<!--      filter: brightness(1.05);-->
+<!--    }-->
+
+<!--    .card-custom {-->
+<!--      background: #fff;-->
+<!--      border-radius: .5rem;-->
+<!--      padding: 2rem;-->
+<!--      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);-->
+<!--      text-align: center;-->
+<!--    }-->
+
+<!--    .toast {-->
+<!--      position: fixed;-->
+<!--      top: 20px;-->
+<!--      right: 20px;-->
+<!--      background: #4caf50;-->
+<!--      color: white;-->
+<!--      padding: 15px 25px;-->
+<!--      border-radius: 5px;-->
+<!--      opacity: 0;-->
+<!--      transition: opacity 0.5s ease-in-out;-->
+<!--      z-index: 9999;-->
+<!--    }-->
+
+<!--    .toast.show {-->
+<!--      opacity: 1;-->
+<!--    }-->
+
+<!--    .highlight {-->
+<!--      color: #1b5e20;-->
+<!--      font-weight: bold;-->
+<!--    }-->
+
+<!--    .details {-->
+<!--      font-size: 1.1rem;-->
+<!--      margin-top: 10px;-->
+<!--    }-->
+
+<!--    .btn-group {-->
+<!--      margin-top: 25px;-->
+<!--    }-->
+
+<!--    .btn-group .btn {-->
+<!--      margin: 0 10px;-->
+<!--    }-->
+<!--  </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--&lt;!&ndash; Navbar &ndash;&gt;-->
+<!--<nav class="navbar navbar-expand-lg navbar-dark py-2">-->
+<!--  <div class="container">-->
+<!--    <a class="navbar-brand" href="/index.html">-->
+<!--&lt;!&ndash;      <img src="https://polimeraas.in/img/logo.png" width="160" height="52" alt="Polimeraas">&ndash;&gt;-->
+<!--      <img src="http://localhost:8080/uploads/Polimeras-logo-white.png" width="140" height="50" alt="Polimeraas">-->
+<!--    </a>-->
+<!--    <div class="collapse navbar-collapse">-->
+<!--      <ul class="navbar-nav ms-auto">-->
+<!--        <li class="nav-item"><a class="nav-link" href="/index.html"><i class="mdi mdi-home"></i> Home</a></li>-->
+<!--        <li class="nav-item"><a class="nav-link" href="/profile.html"><i class="mdi mdi-account"></i> Profile</a></li>-->
+<!--        <li class="nav-item"><a class="nav-link" href="/orders.html"><i class="mdi mdi-cart"></i> Orders</a></li>-->
+<!--&lt;!&ndash;        <li class="nav-item"><a class="nav-link" href="/logout"><i class="mdi mdi-logout"></i> Logout</a></li>&ndash;&gt;-->
+<!--      </ul>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</nav>-->
+
+<!--&lt;!&ndash; Toast Popup &ndash;&gt;-->
+<!--<div class="toast" id="toast">🎉 Payment Successful!</div>-->
+
+<!--&lt;!&ndash; Main Container &ndash;&gt;-->
+<!--<div class="container py-5">-->
+<!--  <div class="card card-custom">-->
+<!--    <h1 class="text-success mb-4">✅ Payment Successful!</h1>-->
+<!--    <p class="details">Thank you <span class="highlight" id="userName">Customer</span>, your payment has been processed.</p>-->
+<!--    <p class="details"><span class="highlight">Order Number:</span> <span id="orderId">N/A</span></p>-->
+<!--    <p class="details"><span class="highlight">Amount Paid:</span> ₹<span id="amountPaid">0.00</span></p>-->
+
+<!--    <div class="btn-group">-->
+<!--      <a href="/orders.html" class="btn btn-yellow">View Orders</a>-->
+<!--      <a href="/index.html" class="btn btn-outline-dark">Back to Home</a>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Bootstrap Bundle &ndash;&gt;-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+
+<!--&lt;!&ndash; JS to handle query parameters &ndash;&gt;-->
+<!--<script>-->
+<!--  const params = new URLSearchParams(window.location.search);-->
+<!--  const name = params.get("name") || "Customer";-->
+<!--  const orderNumber = params.get("order_number") || "N/A";-->
+<!--  const totalAmount = params.get("total_amount") || "0.00";-->
+
+<!--  document.getElementById("userName").textContent = name;-->
+<!--  document.getElementById("orderId").textContent = orderNumber;-->
+<!--  document.getElementById("amountPaid").textContent = totalAmount;-->
+
+<!--  window.onload = () => {-->
+<!--    const toast = document.getElementById("toast");-->
+<!--    toast.classList.add("show");-->
+<!--    setTimeout(() => toast.classList.remove("show"), 4000);-->
+<!--  };-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Success | Polimeraas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png" type="image/x-icon">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Material Design Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --poly-yellow: #ffb600;
+      --poly-dark: #000;
+      --poly-gray: #f8f9fa;
+      --poly-green: #2e7d32;
+      --poly-light-green: #e8f5e9;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--poly-light-green);
+      color: #333;
+    }
+
+    .navbar {
+      background: var(--poly-dark);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .nav-link {
+      color: #fff !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+    }
+
+    .navbar .nav-link:hover {
+      color: var(--poly-yellow) !important;
+      transform: translateY(-2px);
+    }
+
+    .btn-yellow {
+      background: var(--poly-yellow);
+      color: #000;
+      border: 0;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(255, 182, 0, 0.2);
+    }
+
+    .btn-yellow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(255, 182, 0, 0.3);
+    }
+
+    .btn-outline-dark {
+      border-radius: 50px;
+      padding: 0.75rem 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-dark:hover {
+      transform: translateY(-2px);
+    }
+
+    .card-custom {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 3rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      border: none;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      color: var(--poly-green);
+      margin-bottom: 1.5rem;
+      animation: bounce 1s;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+      40% {transform: translateY(-20px);}
+      60% {transform: translateY(-10px);}
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--poly-green);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 50px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      z-index: 9999;
+      box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+      font-weight: 500;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    .highlight {
+      color: var(--poly-green);
+      font-weight: 600;
+    }
+
+    .details {
+      font-size: 1.1rem;
+      margin: 0.75rem 0;
+    }
+
+    .btn-group {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      color: var(--poly-green);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .container.py-5 {
+      padding-top: 3rem !important;
+      padding-bottom: 3rem !important;
+    }
+
+    .payment-details {
+      background: var(--poly-gray);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin: 2rem auto;
+      max-width: 500px;
+    }
+
+    .payment-details-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .payment-details-item:last-child {
+      border-bottom: none;
+    }
+
+    @media (max-width: 576px) {
+      .card-custom {
+        padding: 2rem 1.5rem;
+      }
+
+      .btn-group {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .btn-group .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark py-2">
+  <div class="container">
+    <a class="navbar-brand" href="/index.html">
+      <img src="http://localhost:8080/uploads/Polimeras-logo-white.png" width="140" height="50" alt="Polimeraas">
+    </a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/index.html"><i class="mdi mdi-home"></i> Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/profile.html"><i class="mdi mdi-account"></i> Profile</a></li>
+        <li class="nav-item"><a class="nav-link" href="/orders.html"><i class="mdi mdi-cart"></i> Orders</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Toast Popup -->
+<div class="toast" id="toast">🎉 Payment Successful!</div>
+
+<!-- Main Container -->
+<div class="container py-5">
+  <div class="card card-custom">
+    <div class="success-icon">
+      <i class="mdi mdi-check-circle-outline"></i>
+    </div>
+    <h1>Payment Successful!</h1>
+    <p class="lead">Thank you <span class="highlight" id="userName">Customer</span>, your order has been confirmed!</p>
+
+    <div class="payment-details">
+      <div class="payment-details-item">
+        <span>Order Number:&nbsp;</span>
+        <span class="highlight" id="orderId">N/A</span>
+      </div>
+      <div class="payment-details-item">
+        <span>Amount Paid:</span>
+        <span class="highlight">₹<span id="amountPaid">0.00</span></span>
+      </div>
+    </div>
+
+    <p>We've sent a confirmation email with your order details.</p>
+
+    <div class="btn-group">
+      <a href="/orders.html" class="btn btn-yellow">
+        <i class="mdi mdi-cart-outline"></i> View Orders
+      </a>
+      <a href="/index.html" class="btn btn-outline-dark">
+        <i class="mdi mdi-home-outline"></i> Back to Home
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- JS to handle query parameters -->
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get("name") || "Customer";
+  const orderNumber = params.get("order_number") || "N/A";
+  const totalAmount = params.get("total_amount") || "0.00";
+
+  document.getElementById("userName").textContent = name;
+  document.getElementById("orderId").textContent = orderNumber;
+  document.getElementById("amountPaid").textContent = totalAmount;
+
+  window.onload = () => {
+    const toast = document.getElementById("toast");
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 4000);
+  };
+</script>
+
+</body>
+</html>

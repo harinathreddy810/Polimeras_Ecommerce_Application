@@ -1,0 +1,1378 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Checkout – Polimeraas</title>-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png" type="image/x-icon">-->
+
+<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">-->
+
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;poly-yellow: #ffb600;-->
+<!--            &#45;&#45;poly-gray: #f8f9fa;-->
+<!--            &#45;&#45;poly-dark: #000;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            background-color: var(&#45;&#45;poly-gray);-->
+<!--            font-family: 'Poppins', sans-serif;-->
+<!--        }-->
+
+<!--        .navbar {-->
+<!--            background-color: var(&#45;&#45;poly-dark);-->
+<!--        }-->
+
+<!--        .navbar .nav-link {-->
+<!--            color: white !important;-->
+<!--            font-weight: 500;-->
+<!--        }-->
+
+<!--        .navbar .nav-link:hover {-->
+<!--            color: var(&#45;&#45;poly-yellow) !important;-->
+<!--        }-->
+
+<!--        .checkout-box {-->
+<!--            background: white;-->
+<!--            padding: 2rem;-->
+<!--            border-radius: 8px;-->
+<!--            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);-->
+<!--        }-->
+
+<!--        .summary-card {-->
+<!--            background: #fff;-->
+<!--            padding: 1rem;-->
+<!--            border-radius: 6px;-->
+<!--            border: 1px solid #e5e5e5;-->
+<!--        }-->
+
+<!--        .summary-item {-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            margin-bottom: 0.75rem;-->
+<!--        }-->
+
+<!--        .summary-total {-->
+<!--            border-top: 1px solid #ddd;-->
+<!--            padding-top: 1rem;-->
+<!--            margin-top: 1rem;-->
+<!--            font-size: 1.1rem;-->
+<!--            font-weight: bold;-->
+<!--        }-->
+
+<!--        textarea {-->
+<!--            resize: none;-->
+<!--        }-->
+
+<!--        .payment-option {-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 6px;-->
+<!--            padding: 1rem;-->
+<!--            margin-bottom: 1rem;-->
+<!--            cursor: pointer;-->
+<!--            transition: border 0.3s ease, background-color 0.3s ease;-->
+<!--        }-->
+
+<!--        .payment-option.active {-->
+<!--            border-color: var(&#45;&#45;poly-yellow);-->
+<!--            background-color: #fffbe6;-->
+<!--        }-->
+
+<!--        .btn-yellow {-->
+<!--            background-color: var(&#45;&#45;poly-yellow);-->
+<!--            color: #000;-->
+<!--        }-->
+
+<!--        .btn-yellow:hover {-->
+<!--            background-color: #e6a800;-->
+<!--            color: #000;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<nav class="navbar navbar-expand-lg navbar-dark px-4 py-2">-->
+<!--    <div class="container-fluid">-->
+<!--        <a class="navbar-brand" href="#"><img src="https://polimeraas.in/img/logo.png" alt="Polimeraas" width="160"></a>-->
+<!--        <div class="ms-auto">-->
+<!--            <a class="nav-link d-inline me-3" href="/user-dashboard.html">Back to Cart</a>-->
+<!--            <a class="nav-link d-inline" href="/logout">Logout</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
+
+<!--<div class="container my-5">-->
+<!--    <h2 class="mb-4 fw-bold">Checkout</h2>-->
+<!--    <div class="row g-4">-->
+<!--        &lt;!&ndash; Checkout Form &ndash;&gt;-->
+<!--        <div class="col-md-6">-->
+<!--            <div class="checkout-box">-->
+<!--                <form id="checkoutForm">-->
+<!--                    <h5 class="mb-3">Shipping Information</h5>-->
+
+<!--                    <div class="mb-3">-->
+<!--                        <label for="fullName" class="form-label">Full Name</label>-->
+<!--                        <input type="text" class="form-control" id="fullName" readonly>-->
+<!--                    </div>-->
+
+<!--                    <div class="mb-3">-->
+<!--                        <label for="email" class="form-label">Email</label>-->
+<!--                        <input type="email" class="form-control" id="email" readonly>-->
+<!--                    </div>-->
+
+<!--                    <div class="mb-3">-->
+<!--                        <label for="address" class="form-label">Delivery Address</label>-->
+<!--                        <textarea class="form-control" id="address" name="address" rows="3" required></textarea>-->
+<!--                    </div>-->
+
+<!--                    <h5 class="mt-4 mb-2">Payment Method</h5>-->
+<!--                    <div class="payment-option active" onclick="selectPayment(event, 'cod')">-->
+<!--                        <div class="form-check">-->
+<!--                            <input class="form-check-input" type="radio" name="paymentMethod"-->
+<!--                                   id="cod" value="COD" checked>-->
+<!--                            <label class="form-check-label fw-bold" for="cod">-->
+<!--                                Cash on Delivery-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <p class="mb-0 mt-2 text-muted">Pay in cash when your order is delivered</p>-->
+<!--                    </div>-->
+
+<!--                    <div class="payment-option" onclick="selectPayment(event, 'online')">-->
+<!--                        <div class="form-check">-->
+<!--                            <input class="form-check-input" type="radio" name="paymentMethod"-->
+<!--                                   id="online" value="ONLINE">-->
+<!--                            <label class="form-check-label fw-bold" for="online">-->
+<!--                                Online Payment (Card/UPI)-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <p class="mb-0 mt-2 text-muted">Pay securely with your credit/debit card or UPI</p>-->
+<!--                    </div>-->
+
+<!--                    <button type="submit" class="btn btn-yellow w-100 fw-semibold">Place Order</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Order Summary &ndash;&gt;-->
+<!--        <div class="col-md-6">-->
+<!--            <div class="summary-card">-->
+<!--                <h5 class="mb-3">Order Summary</h5>-->
+<!--                <div id="summaryItems"></div>-->
+<!--                <div class="summary-total">Total: ₹<span id="summaryTotal">0.00</span></div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Bootstrap JS &ndash;&gt;-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+
+<!--<script>-->
+<!--    async function loadCheckoutData() {-->
+<!--        try {-->
+<!--            const res = await fetch("/api/user/checkout", { credentials: 'include' });-->
+<!--            if (!res.ok) throw new Error(await res.text());-->
+<!--            const { user, cart } = await res.json();-->
+
+<!--            document.getElementById('fullName').value = user.firstname + ' ' + user.lastname;-->
+<!--            document.getElementById('email').value = user.email;-->
+<!--            document.getElementById('address').value = user.address;-->
+
+<!--            const summaryDiv = document.getElementById('summaryItems');-->
+<!--            summaryDiv.innerHTML = '';-->
+<!--            let total = 0;-->
+<!--            cart.cartItems.forEach(item => {-->
+<!--                const subtotal = item.subTotal ?? item.product.price * item.quantity;-->
+<!--                total += subtotal;-->
+
+<!--                summaryDiv.innerHTML += `-->
+<!--                    <div class="summary-item">-->
+<!--                        <div>${item.product.name.trim()} × ${item.quantity}</div>-->
+<!--                        <div>₹${subtotal.toFixed(2)}</div>-->
+<!--                    </div>-->
+<!--                `;-->
+<!--            });-->
+
+<!--            document.getElementById('summaryTotal').textContent = total.toFixed(2);-->
+<!--        } catch (env) {-->
+<!--            console.error(env);-->
+<!--            const popup = document.createElement('div');-->
+<!--            popup.innerHTML = `-->
+<!--        <div class="popup-content">-->
+<!--            <p>Cart is Empty please get back to Home page 🏠</p>-->
+<!--            <button class="popup-ok-btn">OK</button>-->
+<!--        </div>`;-->
+<!--            popup.className = 'empty-cart-popup';-->
+<!--            document.body.appendChild(popup);-->
+<!--            const style = document.createElement('style');-->
+<!--            style.textContent = `-->
+<!--        .empty-cart-popup {-->
+<!--            position: fixed;-->
+<!--            top: 50%;-->
+<!--            left: 50%;-->
+<!--            transform: translate(-50%, -50%) scale(0.8);-->
+<!--            background: white;-->
+<!--            padding: 25px;-->
+<!--            border-radius: 10px;-->
+<!--            box-shadow: 0 5px 15px rgba(0,0,0,0.3);-->
+<!--            text-align: center;-->
+<!--            z-index: 1000;-->
+<!--            opacity: 0;-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        .empty-cart-popup.active {-->
+<!--            transform: translate(-50%, -50%) scale(1);-->
+<!--            opacity: 1;-->
+<!--        }-->
+
+<!--        .popup-content p {-->
+<!--            margin-bottom: 20px;-->
+<!--            font-size: 18px;-->
+<!--        }-->
+
+<!--        .popup-ok-btn {-->
+<!--            background: #4CAF50;-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            padding: 10px 20px;-->
+<!--            border-radius: 5px;-->
+<!--            cursor: pointer;-->
+<!--            font-size: 16px;-->
+<!--            transition: background 0.3s;-->
+<!--        }-->
+
+<!--        .popup-ok-btn:hover {-->
+<!--            background: #45a049;-->
+<!--        }-->
+
+<!--        .popup-overlay {-->
+<!--            position: fixed;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            background: rgba(0,0,0,0.5);-->
+<!--            z-index: 999;-->
+<!--            opacity: 0;-->
+<!--            transition: opacity 0.3s ease;-->
+<!--        }-->
+
+<!--        .popup-overlay.active {-->
+<!--            opacity: 1;-->
+<!--        }`;-->
+<!--            document.head.appendChild(style);-->
+
+<!--            const overlay = document.createElement('div');-->
+<!--            overlay.className = 'popup-overlay';-->
+<!--            document.body.appendChild(overlay);-->
+
+<!--            setTimeout(() => {-->
+<!--                popup.classList.add('active');-->
+<!--                overlay.classList.add('active');-->
+<!--            }, 10);-->
+
+<!--            popup.querySelector('.popup-ok-btn').addEventListener('click', () => {-->
+<!--                popup.classList.remove('active');-->
+<!--                overlay.classList.remove('active');-->
+
+<!--                setTimeout(() => {-->
+<!--                    document.body.removeChild(popup);-->
+<!--                    document.body.removeChild(overlay);-->
+<!--                    location.href = "/";-->
+<!--                }, 300);-->
+<!--            });-->
+<!--        }-->
+
+<!--        // catch (err) {-->
+<!--        //     console.error(err);-->
+<!--        //     alert("Cart is Empty please get back to Home page 🏠 ");-->
+<!--        //     location.href="/"-->
+<!--        //-->
+<!--        // }-->
+
+<!--    }-->
+
+<!--    // function selectPayment(event, method) {-->
+<!--    //     document.getElementById(method).checked = true;-->
+<!--    //     document.querySelectorAll('.payment-option').forEach(option => {-->
+<!--    //         option.classList.remove('active');-->
+<!--    //     });-->
+<!--    //     event.currentTarget.classList.add('active');-->
+<!--    // }-->
+<!--    //-->
+<!--    // document.getElementById('checkoutForm').addEventListener('submit', async function(e) {-->
+<!--    //     e.preventDefault();-->
+<!--    //     const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;-->
+<!--    //     const address = document.getElementById('address').value;-->
+<!--    //-->
+<!--    //     try {-->
+<!--    //         const res = await fetch('/api/user/checkout/process', {-->
+<!--    //             method: 'POST',-->
+<!--    //             headers: {-->
+<!--    //                 'Content-Type': 'application/x-www-form-urlencoded'-->
+<!--    //             },-->
+<!--    //             body: new URLSearchParams({ paymentMethod, address }),-->
+<!--    //             credentials: 'include'-->
+<!--    //         });-->
+<!--    //-->
+<!--    //         //popup message for order placed message-->
+<!--    //         if (!res.ok) throw new Error(await res.text());-->
+<!--    //         const msg = await res.text();-->
+<!--    //-->
+<!--    //         // Create the popup element-->
+<!--    //           const popup = document.createElement('div');-->
+<!--    //           popup.className = 'order-success-popup';-->
+<!--    //           popup.innerHTML = `-->
+<!--    //           <div class="popup-content">-->
+<!--    //             <div class="checkmark">✓</div>-->
+<!--    //             <h3>Order Successful!</h3>-->
+<!--    //             <p>${msg.replace(/"/g, '')}</p> &lt;!&ndash; Remove quotes from message &ndash;&gt;-->
+<!--    //             <button class="continue-btn">View Orders</button>-->
+<!--    //             <button class="home-btn">HOME</button>-->
+<!--    //           </div>`;-->
+<!--    //-->
+<!--    //         // Create overlay-->
+<!--    //         const overlay = document.createElement('div');-->
+<!--    //         overlay.className = 'popup-overlay';-->
+<!--    //-->
+<!--    //         // Add to body-->
+<!--    //                     document.body.appendChild(overlay);-->
+<!--    //                     document.body.appendChild(popup);-->
+<!--    //-->
+<!--    //         // Add styles-->
+<!--    //                     const style = document.createElement('style');-->
+<!--    //                     style.textContent = `-->
+<!--    //           .order-success-popup {-->
+<!--    //             position: fixed;-->
+<!--    //             top: 50%;-->
+<!--    //             left: 50%;-->
+<!--    //             transform: translate(-50%, -50%) scale(0.9);-->
+<!--    //             background: white;-->
+<!--    //             padding: 30px;-->
+<!--    //             border-radius: 12px;-->
+<!--    //             box-shadow: 0 10px 25px rgba(0,0,0,0.2);-->
+<!--    //             text-align: center;-->
+<!--    //             z-index: 1000;-->
+<!--    //             opacity: 0;-->
+<!--    //             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);-->
+<!--    //             max-width: 400px;-->
+<!--    //             width: 90%;-->
+<!--    //           }-->
+<!--    //-->
+<!--    //           .popup-overlay {-->
+<!--    //             position: fixed;-->
+<!--    //             top: 0;-->
+<!--    //             left: 0;-->
+<!--    //             width: 100%;-->
+<!--    //             height: 100%;-->
+<!--    //             background: rgba(0,0,0,0.6);-->
+<!--    //             z-index: 999;-->
+<!--    //             opacity: 0;-->
+<!--    //             transition: opacity 0.3s ease;-->
+<!--    //           }-->
+<!--    //-->
+<!--    //           .order-success-popup.active {-->
+<!--    //             transform: translate(-50%, -50%) scale(1);-->
+<!--    //             opacity: 1;-->
+<!--    //           }-->
+<!--    //-->
+<!--    //           .popup-overlay.active {-->
+<!--    //             opacity: 1;-->
+<!--    //           }-->
+<!--    //-->
+<!--    //           .checkmark {-->
+<!--    //             font-size: 60px;-->
+<!--    //             color: #4CAF50;-->
+<!--    //             margin-bottom: 20px;-->
+<!--    //             animation: bounce 0.6s;-->
+<!--    //           }-->
+<!--    //-->
+<!--    //           .order-success-popup h3 {-->
+<!--    //             color: #2E7D32;-->
+<!--    //             margin-bottom: 15px;-->
+<!--    //             font-size: 24px;-->
+<!--    //           }-->
+<!--    //-->
+<!--    //           .order-success-popup p {-->
+<!--    //             color: #555;-->
+<!--    //             margin-bottom: 25px;-->
+<!--    //             line-height: 1.5;-->
+<!--    //           }-->
+<!--    //-->
+<!--    //           .continue-btn {-->
+<!--    //             background: #4CAF50;-->
+<!--    //             color: white;-->
+<!--    //             margin: 5px 0;-->
+<!--    //             border: none;-->
+<!--    //             padding: 12px 25px;-->
+<!--    //             border-radius: 6px;-->
+<!--    //             cursor: pointer;-->
+<!--    //             font-size: 16px;-->
+<!--    //             font-weight: 500;-->
+<!--    //             transition: all 0.3s;-->
+<!--    //             width: 100%;-->
+<!--    //           }-->
+<!--    //-->
+<!--    //           .continue-btn:hover {-->
+<!--    //             background: #3e8e41;-->
+<!--    //             transform: translateY(-2px);-->
+<!--    //           }-->
+<!--    //           .home-btn {-->
+<!--    //             background: #2A6FDD;-->
+<!--    //             margin: 5px 0;-->
+<!--    //             color: white;-->
+<!--    //             border: none;-->
+<!--    //             padding: 12px 25px;-->
+<!--    //             border-radius: 6px;-->
+<!--    //             cursor: pointer;-->
+<!--    //             font-size: 16px;-->
+<!--    //             font-weight: 500;-->
+<!--    //             transition: all 0.3s;-->
+<!--    //             width: 100%;-->
+<!--    //           }-->
+<!--    //-->
+<!--    //           .home-btn:hover {-->
+<!--    //             background: #2A6FDD;-->
+<!--    //             transform: translateY(-2px);-->
+<!--    //           }-->
+<!--    //-->
+<!--    //           @keyframes bounce {-->
+<!--    //             0%, 20%, 50%, 80%, 100% {transform: translateY(0);}-->
+<!--    //             40% {transform: translateY(-20px);}-->
+<!--    //             60% {transform: translateY(-10px);}-->
+<!--    //           }`;-->
+<!--    //          document.head.appendChild(style);-->
+<!--    //-->
+<!--    //         // Show popup-->
+<!--    //         setTimeout(() => {-->
+<!--    //             popup.classList.add('active');-->
+<!--    //             overlay.classList.add('active');-->
+<!--    //         }, 10);-->
+<!--    //-->
+<!--    //         // Handle button click-->
+<!--    //         popup.querySelector('.continue-btn').addEventListener('click', () => {-->
+<!--    //             popup.classList.remove('active');-->
+<!--    //             overlay.classList.remove('active');-->
+<!--    //-->
+<!--    //             setTimeout(() => {-->
+<!--    //                 document.body.removeChild(popup);-->
+<!--    //                 document.body.removeChild(overlay);-->
+<!--    //                 location.href = '/user/orders';-->
+<!--    //             }, 300);-->
+<!--    //         });-->
+<!--    //         popup.querySelector('.home-btn').addEventListener('click', () => {-->
+<!--    //             popup.classList.remove('active');-->
+<!--    //             overlay.classList.remove('active');-->
+<!--    //-->
+<!--    //             setTimeout(() => {-->
+<!--    //                 document.body.removeChild(popup);-->
+<!--    //                 document.body.removeChild(overlay);-->
+<!--    //                 location.href = '/';-->
+<!--    //             }, 300);-->
+<!--    //         });-->
+<!--    //-->
+<!--    //         // if (!res.ok) throw new Error(await res.text());-->
+<!--    //         // const msg = await res.text();-->
+<!--    //         // alert(msg);-->
+<!--    //         // location.href = '/user/orders'; // redirect to orders or confirmation-->
+<!--    //     } catch (err) {-->
+<!--    //         alert("Checkout failed:\n" + err.message);-->
+<!--    //     }-->
+<!--    // });-->
+
+
+<!--    function selectPayment(event, method) {-->
+<!--        document.getElementById(method).checked = true;-->
+<!--        document.querySelectorAll('.payment-option').forEach(option => {-->
+<!--            option.classList.remove('active');-->
+<!--        });-->
+<!--        event.currentTarget.classList.add('active');-->
+<!--    }-->
+
+<!--    document.getElementById('checkoutForm').addEventListener('submit', async function (e) {-->
+<!--        e.preventDefault();-->
+<!--        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;-->
+<!--        const address = document.getElementById('address').value;-->
+
+<!--        try {-->
+<!--            if (paymentMethod === 'ONLINE') {-->
+<!--                // Online Payment: redirect to PayPal approval URL-->
+<!--                // const amount = document.getElementById('summaryTotal').textContent;-->
+<!--                // const res = await fetch('/api/payment/pay?amount=' + amount, {-->
+<!--                //     method: 'POST'-->
+<!--                // });-->
+<!--                // const responseText = await res.text();-->
+<!--                // const match = responseText.match(/Redirect to:\s*(https:\/\/www\.sandbox\.paypal\.com\/[^"]+)/);-->
+<!--                // if (match) {-->
+<!--                //     window.location.href = match[1];-->
+<!--                // } else {-->
+<!--                //     alert("Unable to redirect to PayPal.");-->
+<!--                // }-->
+
+<!--                const amount = document.getElementById('summaryTotal').textContent;-->
+<!--                const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;-->
+<!--                const address = document.getElementById('address').value;-->
+
+<!--                try {-->
+<!--                    // Step 1: Process checkout-->
+<!--                    const processRes = await fetch('/api/user/checkout/process', {-->
+<!--                        method: 'POST',-->
+<!--                        headers: {-->
+<!--                            'Content-Type': 'application/x-www-form-urlencoded'-->
+<!--                        },-->
+<!--                        body: new URLSearchParams({ paymentMethod, address }),-->
+<!--                        credentials: 'include'-->
+<!--                    });-->
+
+<!--                    if (!processRes.ok) throw new Error(await processRes.text());-->
+
+<!--                    // Step 2: If ONLINE, redirect to PayPal-->
+<!--                    if (paymentMethod === 'ONLINE') {-->
+<!--                        const payRes = await fetch(`http://localhost:8080/api/payment/pay?amount=${amount}`, {-->
+<!--                            method: 'POST'-->
+<!--                        });-->
+
+<!--                        const responseText = await payRes.text();-->
+<!--                        const match = responseText.match(/Redirect to:\s*(https:\/\/www\.sandbox\.paypal\.com\/[^"]+)/);-->
+
+<!--                        if (match) {-->
+<!--                            window.location.href = match[1];-->
+<!--                        } else {-->
+<!--                            alert("Unable to redirect to PayPal.");-->
+<!--                        }-->
+
+<!--                    }-->
+<!--                } catch (err) {-->
+<!--                    alert("Checkout failed:\n" + err.message);-->
+<!--                }-->
+
+<!--            } else if (paymentMethod === 'COD') {-->
+<!--                // COD flow (same as your original)-->
+<!--                const res = await fetch('/api/user/checkout/process', {-->
+<!--                    method: 'POST',-->
+<!--                    headers: {-->
+<!--                        'Content-Type': 'application/x-www-form-urlencoded'-->
+<!--                    },-->
+<!--                    body: new URLSearchParams({ paymentMethod, address }),-->
+<!--                    credentials: 'include'-->
+<!--                });-->
+
+<!--                if (!res.ok) throw new Error(await res.text());-->
+<!--                const msg = await res.text();-->
+
+<!--                // Create the popup element-->
+<!--                const popup = document.createElement('div');-->
+<!--                popup.className = 'order-success-popup';-->
+<!--                popup.innerHTML = `-->
+<!--              <div class="popup-content">-->
+<!--                <div class="checkmark">✓</div>-->
+<!--                <h3>Order Successful!</h3>-->
+<!--                <p>${msg.replace(/"/g, '')}</p>-->
+<!--                <button class="continue-btn">View Orders</button>-->
+<!--                <button class="home-btn">HOME</button>-->
+<!--              </div>`;-->
+
+<!--                // Create overlay-->
+<!--                const overlay = document.createElement('div');-->
+<!--                overlay.className = 'popup-overlay';-->
+<!--                document.body.appendChild(overlay);-->
+<!--                document.body.appendChild(popup);-->
+
+<!--                // Add styles-->
+<!--                const style = document.createElement('style');-->
+<!--                style.textContent = `-->
+<!--              .order-success-popup {-->
+<!--                position: fixed;-->
+<!--                top: 50%;-->
+<!--                left: 50%;-->
+<!--                transform: translate(-50%, -50%) scale(0.9);-->
+<!--                background: white;-->
+<!--                padding: 30px;-->
+<!--                border-radius: 12px;-->
+<!--                box-shadow: 0 10px 25px rgba(0,0,0,0.2);-->
+<!--                text-align: center;-->
+<!--                z-index: 1000;-->
+<!--                opacity: 0;-->
+<!--                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);-->
+<!--                max-width: 400px;-->
+<!--                width: 90%;-->
+<!--              }-->
+
+<!--              .popup-overlay {-->
+<!--                position: fixed;-->
+<!--                top: 0;-->
+<!--                left: 0;-->
+<!--                width: 100%;-->
+<!--                height: 100%;-->
+<!--                background: rgba(0,0,0,0.6);-->
+<!--                z-index: 999;-->
+<!--                opacity: 0;-->
+<!--                transition: opacity 0.3s ease;-->
+<!--              }-->
+
+<!--              .order-success-popup.active {-->
+<!--                transform: translate(-50%, -50%) scale(1);-->
+<!--                opacity: 1;-->
+<!--              }-->
+
+<!--              .popup-overlay.active {-->
+<!--                opacity: 1;-->
+<!--              }-->
+
+<!--              .checkmark {-->
+<!--                font-size: 60px;-->
+<!--                color: #4CAF50;-->
+<!--                margin-bottom: 20px;-->
+<!--                animation: bounce 0.6s;-->
+<!--              }-->
+
+<!--              .order-success-popup h3 {-->
+<!--                color: #2E7D32;-->
+<!--                margin-bottom: 15px;-->
+<!--                font-size: 24px;-->
+<!--              }-->
+
+<!--              .order-success-popup p {-->
+<!--                color: #555;-->
+<!--                margin-bottom: 25px;-->
+<!--                line-height: 1.5;-->
+<!--              }-->
+
+<!--              .continue-btn {-->
+<!--                background: #4CAF50;-->
+<!--                color: white;-->
+<!--                margin: 5px 0;-->
+<!--                border: none;-->
+<!--                padding: 12px 25px;-->
+<!--                border-radius: 6px;-->
+<!--                cursor: pointer;-->
+<!--                font-size: 16px;-->
+<!--                font-weight: 500;-->
+<!--                transition: all 0.3s;-->
+<!--                width: 100%;-->
+<!--              }-->
+
+<!--              .continue-btn:hover {-->
+<!--                background: #3e8e41;-->
+<!--                transform: translateY(-2px);-->
+<!--              }-->
+
+<!--              .home-btn {-->
+<!--                background: #2A6FDD;-->
+<!--                margin: 5px 0;-->
+<!--                color: white;-->
+<!--                border: none;-->
+<!--                padding: 12px 25px;-->
+<!--                border-radius: 6px;-->
+<!--                cursor: pointer;-->
+<!--                font-size: 16px;-->
+<!--                font-weight: 500;-->
+<!--                transition: all 0.3s;-->
+<!--                width: 100%;-->
+<!--              }-->
+
+<!--              .home-btn:hover {-->
+<!--                background: #2A6FDD;-->
+<!--                transform: translateY(-2px);-->
+<!--              }-->
+
+<!--              @keyframes bounce {-->
+<!--                0%, 20%, 50%, 80%, 100% {transform: translateY(0);}-->
+<!--                40% {transform: translateY(-20px);}-->
+<!--                60% {transform: translateY(-10px);}-->
+<!--              }`;-->
+<!--                document.head.appendChild(style);-->
+
+<!--                // Show popup-->
+<!--                setTimeout(() => {-->
+<!--                    popup.classList.add('active');-->
+<!--                    overlay.classList.add('active');-->
+<!--                }, 10);-->
+
+<!--                popup.querySelector('.continue-btn').addEventListener('click', () => {-->
+<!--                    popup.classList.remove('active');-->
+<!--                    overlay.classList.remove('active');-->
+<!--                    setTimeout(() => {-->
+<!--                        document.body.removeChild(popup);-->
+<!--                        document.body.removeChild(overlay);-->
+<!--                        location.href = '/orders.html';-->
+<!--                    }, 300);-->
+<!--                });-->
+
+<!--                popup.querySelector('.home-btn').addEventListener('click', () => {-->
+<!--                    popup.classList.remove('active');-->
+<!--                    overlay.classList.remove('active');-->
+<!--                    setTimeout(() => {-->
+<!--                        document.body.removeChild(popup);-->
+<!--                        document.body.removeChild(overlay);-->
+<!--                        location.href = '/';-->
+<!--                    }, 300);-->
+<!--                });-->
+<!--            } else {-->
+<!--                alert("Invalid payment method.");-->
+<!--            }-->
+<!--        } catch (err) {-->
+<!--            alert("Checkout failed:\n" + err.message);-->
+<!--        }-->
+<!--    });-->
+
+
+<!--    document.addEventListener('DOMContentLoaded', loadCheckoutData);-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout – Polimeraas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Complete your purchase on Polimeraas - The Farmers House">
+    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png" type="image/x-icon">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --poly-yellow: #ffb600;
+            --poly-yellow-light: #fffbe6;
+            --poly-yellow-hover: #e6a800;
+            --poly-dark: #000;
+            --poly-gray: #f8f9fa;
+            --poly-border: #e5e5e5;
+            --poly-text: #212529;
+            --poly-text-light: #6c757d;
+            --poly-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --poly-radius: 8px;
+        }
+
+        body {
+            background-color: var(--poly-gray);
+            font-family: 'Poppins', sans-serif;
+            color: var(--poly-text);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: var(--poly-dark);
+            padding: 0.75rem 1rem;
+        }
+
+        .navbar-brand img {
+            width: 160px;
+            height: auto;
+        }
+
+        .navbar .nav-link {
+            color: white !important;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar .nav-link:hover {
+            color: var(--poly-yellow) !important;
+        }
+
+        .checkout-container {
+            padding: 2rem 0;
+        }
+
+        .checkout-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .checkout-header h1 {
+            font-weight: 600;
+            color: var(--poly-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .checkout-box {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--poly-radius);
+            box-shadow: var(--poly-shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--poly-dark);
+            font-size: 1.25rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-control {
+            padding: 0.75rem 1rem;
+            border-radius: var(--poly-radius);
+            border: 1px solid var(--poly-border);
+            margin-bottom: 1rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--poly-yellow);
+            box-shadow: 0 0 0 0.25rem rgba(255, 182, 0, 0.25);
+            outline: none;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .payment-option {
+            border: 1px solid var(--poly-border);
+            border-radius: var(--poly-radius);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .payment-option:hover {
+            border-color: var(--poly-yellow);
+        }
+
+        .payment-option.active {
+            border-color: var(--poly-yellow);
+            background-color: var(--poly-yellow-light);
+        }
+
+        .payment-option .form-check-input {
+            margin-top: 0.2rem;
+        }
+
+        .payment-option .form-check-label {
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .payment-description {
+            color: var(--poly-text-light);
+            margin: 0.5rem 0 0 1.75rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-yellow {
+            background-color: var(--poly-yellow);
+            color: var(--poly-dark);
+            font-weight: 500;
+            padding: 0.75rem;
+            border-radius: var(--poly-radius);
+            transition: background-color 0.2s ease;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-yellow:hover:not(:disabled) {
+            background-color: var(--poly-yellow-hover);
+            color: var(--poly-dark);
+        }
+
+        .btn-yellow:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--poly-radius);
+            border: 1px solid var(--poly-border);
+            box-shadow: var(--poly-shadow);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--poly-border);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-total {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--poly-border);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--poly-text);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--poly-yellow);
+        }
+
+        @media (max-width: 768px) {
+            .checkout-box {
+                padding: 1.5rem;
+            }
+
+            .navbar .nav-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/" aria-label="Polimeraas Home">
+            <img src="https://polimeraas.in/img/logo.png" alt="Polimeraas Logo">
+        </a>
+        <div class="d-flex align-items-center">
+            <a class="nav-link" href="/user-dashboard.html">
+                <i class="mdi mdi-arrow-left" aria-hidden="true"></i> Back to Cart
+            </a>
+<!--            <a class="nav-link" href="/logout">-->
+<!--                <i class="mdi mdi-logout" aria-hidden="true"></i> Logout-->
+<!--            </a>-->
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="container checkout-container">
+    <header class="checkout-header">
+        <h1>Checkout</h1>
+    </header>
+
+    <div class="row g-4">
+        <!-- CHECKOUT FORM -->
+        <div class="col-lg-6">
+            <section class="checkout-box">
+                <form id="checkoutForm">
+                    <h2 class="section-title">Shipping Information</h2>
+
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="fullName" readonly aria-readonly="true">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" readonly aria-readonly="true">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Delivery Address</label>
+                        <textarea class="form-control" id="address" name="address" required aria-required="true"></textarea>
+                    </div>
+
+                    <h2 class="section-title">Payment Method</h2>
+
+                    <div class="payment-option active" onclick="selectPayment(event, 'cod')" role="button" tabindex="0" aria-pressed="true">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="COD" checked>
+                            <label class="form-check-label" for="cod">Cash on Delivery</label>
+                        </div>
+                        <p class="payment-description">Pay in cash when your order is delivered</p>
+                    </div>
+
+                    <div class="payment-option" onclick="selectPayment(event, 'online')" role="button" tabindex="0" aria-pressed="false">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="online" value="ONLINE">
+                            <label class="form-check-label" for="online">Online Payment (Card/UPI)</label>
+                        </div>
+                        <p class="payment-description">Pay securely with your credit/debit card or UPI</p>
+                    </div>
+
+                    <button type="submit" class="btn btn-yellow mt-3" id="placeOrderBtn">Place Order</button>
+                </form>
+            </section>
+        </div>
+
+        <!-- ORDER SUMMARY -->
+        <div class="col-lg-6">
+            <section class="summary-card" aria-live="polite">
+                <h2 class="section-title">Order Summary</h2>
+                <div id="summaryItems"></div>
+                <div class="summary-total">Total: ₹<span id="summaryTotal">0.00</span></div>
+            </section>
+        </div>
+    </div>
+</main>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    async function loadCheckoutData() {
+        try {
+            const res = await fetch("/api/user/checkout", { credentials: 'include' });
+            if (!res.ok) throw new Error(await res.text());
+            const { user, cart } = await res.json();
+
+            document.getElementById('fullName').value = user.firstname + ' ' + user.lastname;
+            document.getElementById('email').value = user.email;
+            document.getElementById('address').value = user.address;
+
+            const summaryDiv = document.getElementById('summaryItems');
+            summaryDiv.innerHTML = '';
+            let total = 0;
+            cart.cartItems.forEach(item => {
+                const subtotal = item.subTotal ?? item.product.price * item.quantity;
+                total += subtotal;
+
+                summaryDiv.innerHTML += `
+                    <div class="summary-item">
+                        <div>${item.product.name.trim()} × ${item.quantity}</div>
+                        <div>₹${subtotal.toFixed(2)}</div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('summaryTotal').textContent = total.toFixed(2);
+        } catch (err) {
+            console.error(err);
+            const popup = document.createElement('div');
+            popup.innerHTML = `
+                <div class="popup-content">
+                    <p>Cart is Empty please get back to Home page 🏠</p>
+                    <button class="popup-ok-btn">OK</button>
+                </div>`;
+            popup.className = 'empty-cart-popup';
+            document.body.appendChild(popup);
+            const style = document.createElement('style');
+            style.textContent = `
+                .empty-cart-popup {
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%) scale(0.8);
+                    background: white;
+                    padding: 25px;
+                    border-radius: 10px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                    text-align: center;
+                    z-index: 1000;
+                    opacity: 0;
+                    transition: all 0.3s ease;
+                }
+
+                .empty-cart-popup.active {
+                    transform: translate(-50%, -50%) scale(1);
+                    opacity: 1;
+                }
+
+                .popup-content p {
+                    margin-bottom: 20px;
+                    font-size: 18px;
+                }
+
+                .popup-ok-btn {
+                    background: #4CAF50;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    transition: background 0.3s;
+                }
+
+                .popup-ok-btn:hover {
+                    background: #45a049;
+                }
+
+                .popup-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.5);
+                    z-index: 999;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+
+                .popup-overlay.active {
+                    opacity: 1;
+                }`;
+            document.head.appendChild(style);
+
+            const overlay = document.createElement('div');
+            overlay.className = 'popup-overlay';
+            document.body.appendChild(overlay);
+
+            setTimeout(() => {
+                popup.classList.add('active');
+                overlay.classList.add('active');
+            }, 10);
+
+            popup.querySelector('.popup-ok-btn').addEventListener('click', () => {
+                popup.classList.remove('active');
+                overlay.classList.remove('active');
+
+                setTimeout(() => {
+                    document.body.removeChild(popup);
+                    document.body.removeChild(overlay);
+                    location.href = "/";
+                }, 300);
+            });
+        }
+    }
+
+    function selectPayment(event, method) {
+        document.getElementById(method).checked = true;
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.classList.remove('active');
+            option.setAttribute('aria-pressed', 'false');
+        });
+        event.currentTarget.classList.add('active');
+        event.currentTarget.setAttribute('aria-pressed', 'true');
+    }
+
+    document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const placeOrderBtn = document.getElementById('placeOrderBtn');
+
+        // Disable the button to prevent multiple submissions
+        placeOrderBtn.disabled = true;
+        placeOrderBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        const address = document.getElementById('address').value;
+
+        try {
+            if (paymentMethod === 'ONLINE') {
+                const amount = document.getElementById('summaryTotal').textContent;
+                const processRes = await fetch('/api/user/checkout/process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({ paymentMethod, address }),
+                    credentials: 'include'
+                });
+
+                if (!processRes.ok) throw new Error(await processRes.text());
+
+                const payRes = await fetch(`http://localhost:8080/api/payment/pay?amount=${amount}`, {
+                    method: 'POST'
+                });
+
+                const responseText = await payRes.text();
+                const match = responseText.match(/Redirect to:\s*(https:\/\/www\.sandbox\.paypal\.com\/[^"]+)/);
+
+                if (match) {
+                    window.location.href = match[1];
+                } else {
+                    throw new Error("Unable to redirect to PayPal.");
+                }
+
+            }  else if (paymentMethod === 'COD') {
+                // COD flow (same as your original)
+                const res = await fetch('/api/user/checkout/process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({ paymentMethod, address }),
+                    credentials: 'include'
+                });
+
+                if (!res.ok) throw new Error(await res.text());
+                const msg = await res.text();
+
+                // Create the popup element
+                const popup = document.createElement('div');
+                popup.className = 'order-success-popup';
+                popup.innerHTML = `
+              <div class="popup-content">
+                <div class="checkmark">✓</div>
+                <h3>Order Successful!</h3>
+                <p>${msg.replace(/"/g, '')}</p>
+                <button class="continue-btn">View Orders</button>
+                <button class="home-btn">HOME</button>
+              </div>`;
+
+                // Create overlay
+                const overlay = document.createElement('div');
+                overlay.className = 'popup-overlay';
+                document.body.appendChild(overlay);
+                document.body.appendChild(popup);
+
+                // Add styles
+                const style = document.createElement('style');
+                style.textContent = `
+              .order-success-popup {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(0.9);
+                background: white;
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                text-align: center;
+                z-index: 1000;
+                opacity: 0;
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                max-width: 400px;
+                width: 90%;
+              }
+
+              .popup-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.6);
+                z-index: 999;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+              }
+
+              .order-success-popup.active {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+              }
+
+              .popup-overlay.active {
+                opacity: 1;
+              }
+
+              .checkmark {
+                font-size: 60px;
+                color: #4CAF50;
+                margin-bottom: 20px;
+                animation: bounce 0.6s;
+              }
+
+              .order-success-popup h3 {
+                color: #2E7D32;
+                margin-bottom: 15px;
+                font-size: 24px;
+              }
+
+              .order-success-popup p {
+                color: #555;
+                margin-bottom: 25px;
+                line-height: 1.5;
+              }
+
+              .continue-btn {
+                background: #4CAF50;
+                color: white;
+                margin: 5px 0;
+                border: none;
+                padding: 12px 25px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 500;
+                transition: all 0.3s;
+                width: 100%;
+              }
+
+              .continue-btn:hover {
+                background: #3e8e41;
+                transform: translateY(-2px);
+              }
+
+              .home-btn {
+                background: #2A6FDD;
+                margin: 5px 0;
+                color: white;
+                border: none;
+                padding: 12px 25px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 500;
+                transition: all 0.3s;
+                width: 100%;
+              }
+
+              .home-btn:hover {
+                background: #2A6FDD;
+                transform: translateY(-2px);
+              }
+
+              @keyframes bounce {
+                0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+                40% {transform: translateY(-20px);}
+                60% {transform: translateY(-10px);}
+              }`;
+                document.head.appendChild(style);
+
+                // Show popup
+                setTimeout(() => {
+                    popup.classList.add('active');
+                    overlay.classList.add('active');
+                }, 10);
+
+                popup.querySelector('.continue-btn').addEventListener('click', () => {
+                    popup.classList.remove('active');
+                    overlay.classList.remove('active');
+                    setTimeout(() => {
+                        document.body.removeChild(popup);
+                        document.body.removeChild(overlay);
+                        location.href = '/orders.html';
+                    }, 300);
+                });
+
+                popup.querySelector('.home-btn').addEventListener('click', () => {
+                    popup.classList.remove('active');
+                    overlay.classList.remove('active');
+                    setTimeout(() => {
+                        document.body.removeChild(popup);
+                        document.body.removeChild(overlay);
+                        location.href = '/';
+                    }, 300);
+                });
+            } else {
+                alert("Invalid payment method.");
+            }
+        } catch (err) {
+            alert("Checkout failed:\n" + err.message);
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', loadCheckoutData);
+</script>
+
+</body>
+</html>

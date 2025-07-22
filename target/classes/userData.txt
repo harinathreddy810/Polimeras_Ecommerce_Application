@@ -1,0 +1,21 @@
+INSERT INTO users
+(username, email, password, firstname, lastname, phone_number, address, city, state, zipcode, role, created_at, updated_at, is_active)
+VALUES
+('vineeth', 'vadlavineethkumar7@gmail.com', '1111', 'vineeth', 'kumar', '1234567890', '123 Admin St', 'New York', 'NY', '10001', 'ADMIN', NOW(), NOW(), 1),
+('alice', 'alice@example.com', 'a', 'Sarah', 'Johnson', '2345678901', '456 Main St', 'Chicago', 'IL', '60601', 'CUSTOMER', NOW(), NOW(), 1),
+('hari', 'bakkanolaharinathreddy@gmail.com', '2222', 'hari', 'nath', '3456789012', '789 Oak Ave', 'Los Angeles', 'CA', '90001', 'CUSTOMER', NOW(), NOW(), 1),
+('sai', 'aishettysaiteja@gmail.com', '333', 'Robert', 'Williams', '5678901234', '654 Admin Blvd', 'Phoenix', 'AZ', '85001', 'ADMIN', NOW(), NOW(), 1);
+
+
+INSERT INTO products (category, created_at, DESCRIPTION, image_name, img_type, img_url, is_active, NAME, price, stock_quantity, updated_at)
+VALUES
+('FRUITS', NOW(), 'Fresh juicy apples', 'apple.jpg', 'image/jpeg', NULL, 1, 'Apple', 0.99, 100, NOW()),
+('FRUITS', NOW(), 'Sweet and tangy', 'orange.jpg', 'image/jpeg', NULL, 1, 'Orange', 1.29, 80, NOW()),
+('VEGETABLES', NOW(), 'Fresh green broccoli', 'broccoli.jpg', 'image/jpeg', NULL, 1, 'Broccoli', 2.49, 50, NOW()),
+('GROCERY', NOW(), '1kg pack of rice', 'rice.jpg', 'image/jpeg', NULL, 1, 'Basmati Rice', 4.99, 30, NOW()),
+('FRUITS', NOW(), 'Creamy and sweet', 'banana.jpg', 'image/jpeg', NULL, 1, 'Banana', 0.49, 120, NOW()),
+('VEGETABLES', NOW(), 'Fresh carrots', 'carrot.jpg', 'image/jpeg', NULL, 1, 'Carrot', 1.19, 75, NOW()),
+('GROCERY', NOW(), 'Whole wheat bread', 'bread.jpg', 'image/jpeg', NULL, 1, 'Bread', 3.29, 40, NOW()),
+('VEGETABLES', NOW(), 'Leafy greens', 'spinach.jpg', 'image/jpeg', NULL, 1, 'Spinach', 2.99, 60, NOW()),
+('FRUITS', NOW(), 'Juicy grapes', 'grapes.jpg', 'image/jpeg', NULL, 1, 'Grapes', 3.99, 45, NOW()),
+('GROCERY', NOW(), '1L fresh milk', 'milk.jpg', 'image/jpeg', NULL, 1, 'Milk', 2.49, 25, NOW());

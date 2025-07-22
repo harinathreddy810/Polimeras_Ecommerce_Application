@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vendor Dashboard | Polimeraas</title>
+    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png"  type="image/x-icon">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material‑Design Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --poly-yellow: #ffb600;
+            --poly-dark  : #000;
+            --poly-gray  : #f8f9fa;
+        }
+
+        body         { font-family: "Poppins", sans-serif; background: var(--poly-gray); }
+        a            { text-decoration:none }
+        .navbar      { background: var(--poly-dark); }
+        .navbar .nav-link        { color:#fff !important; font-weight:500; }
+        .navbar .nav-link:hover  { color:var(--poly-yellow) !important; }
+        .btn-yellow  { background:var(--poly-yellow); color:#000; border:0; }
+        .btn-yellow:hover { filter:brightness(1.05); }
+        .stat-card   { background:#fff; border:0; box-shadow:0 2px 6px rgba(0,0,0,.05); }
+        .status-active   { color:green; font-weight:600; }
+        .status-inactive { color:#dc3545; font-weight:600; }
+        #alertBox { display:none; }
+    </style>
+</head>
+<body>
+<!-- =============== NAVBAR =============== -->
+<nav class="navbar navbar-expand-lg navbar-dark py-2">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/vendor-dashboard.html">
+            <img src="https://polimeraas.in/img/logo.png" width="160" height="52" alt="Polimeraas">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#vendorNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="vendorNav" class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <span id="welcome" class="nav-link"></span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout"><i class="mdi mdi-logout"></i>&nbsp;Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- =============== MAIN CONTENT =============== -->
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 fw-bold">Vendor Dashboard</h1>
+        <a class="btn btn-yellow" href="/add-product.html"><i class="mdi mdi-plus"></i>&nbsp;Add New Product</a>
+    </div>
+
+    <!-- Dynamic alert -->
+    <div id="alertBox" class="alert" role="alert"></div>
+
+    <!-- ======= STATISTICS ======= -->
+    <div class="row g-3 mb-5">
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="card stat-card text-center p-3">
+                <div class="stat-icon mb-2"><i class="mdi mdi-package-variant-closed" style="font-size:2rem;color:var(--poly-yellow)"></i></div>
+                <h6 class="text-uppercase small text-muted">Total Products</h6>
+                <p id="totalProducts" class="fs-4 fw-bold mb-0">–</p>
+            </div>
+        </div>
+    </div><!-- /row -->
+
+
+    <!-- ======= PRODUCT TABLE ======= -->
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">My Products</h2>
+
+        <div id="emptyMsg" class="text-muted mb-3">Loading…</div>
+
+        <div class="table-responsive" id="prodTableWrapper" style="display:none">
+            <table id="prodTable" class="table table-striped align-middle">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price (₹)</th>
+                    <th>Qty</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+                </thead>
+                <tbody id="prodRows"></tbody>
+            </table>
+        </div>
+    </section>
+
+</div><!-- /container -->
+
+
+<!-- =============== JS =============== -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    /* ---------------- CSRF helper (works if Spring sends XSRF‑TOKEN cookie) ---------------- */
+    function csrfHeaders() {
+        const cookie = document.cookie.split('; ').find(row => row.startsWith('XSRF-TOKEN='));
+        return cookie ? { 'X-XSRF-TOKEN': decodeURIComponent(cookie.split('=')[1]) } : {};
+    }
+
+    /* ---------------- Alert helper ---------------- */
+    function showAlert(message, type='success') {
+        const box = document.getElementById('alertBox');
+        box.className = 'alert alert-' + type;
+        box.textContent = message;
+        box.style.display = 'block';
+        setTimeout(() => box.style.display = 'none', 3000);
+    }
+
+    /* ---------------- Date format helper (dd‑MM‑yyyy) ---------------- */
+    function formatDate(isoDate) {
+        if(!isoDate) return '';
+        const d = new Date(isoDate);
+        return ('0'+d.getDate()).slice(-2) + '-' +
+            ('0'+(d.getMonth()+1)).slice(-2) + '-' + d.getFullYear();
+    }
+
+    /* ---------------- Populate stats & table ---------------- */
+    async function loadDashboard() {
+        try {
+            const res = await fetch('/api/vendor/vendor-dashboard-data', {
+                credentials: 'include'
+            });
+            if (!res.ok) throw new Error('Failed to load dashboard');
+            const data = await res.json();
+
+            // Welcome name
+            document.getElementById('welcome').textContent = `Welcome, ${data.vendor}`;
+
+            // Stats
+            document.getElementById('totalProducts').textContent = data.totalProducts;
+
+            // Product table
+            const tbody = document.getElementById('prodRows');
+            tbody.innerHTML = '';
+            if (data.products && data.products.length) {
+                document.getElementById('emptyMsg').style.display = 'none';
+                document.getElementById('prodTableWrapper').style.display  = '';
+
+                data.products.forEach(p => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${p.id}</td>
+                        <td>${p.name}</td>
+                        <td>${p.category}</td>
+                        <td>₹${p.price}</td>
+                        <td>${p.stockQuantity}</td>
+                        <td><span class="${p.active ? 'status-active':'status-inactive'}">
+                                ${p.active ? 'Active':'Inactive'}
+                            </span></td>
+                        <td>${formatDate(p.createdAt)}</td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-yellow me-1" style="padding:2px 6px" href="update-product.html?id=${p.id}">Edit</a>
+                            <button class="btn btn-sm btn-danger" style="padding:2px 6px" onclick="deleteProduct(${p.id})">Delete</button>
+                        </td>`;
+                    tbody.appendChild(tr);
+                });
+            } else {
+                document.getElementById('emptyMsg').textContent = 'No products found. Add your first product.';
+            }
+        } catch (err) {
+            console.error(err);
+            showAlert(err.message || 'Error loading data', 'danger');
+            document.getElementById('emptyMsg').textContent = 'Failed to load data – check console.';
+        }
+    }
+
+    /* ---------------- Delete product ---------------- */
+    async function deleteProduct(id) {
+        if (!confirm(`Are you sure you want to delete product ${id}?`)) return;
+        try {
+            const res = await fetch(`/api/vendor/product/${id}`, {
+                method: 'DELETE',
+                headers: { ...csrfHeaders() }
+            });
+            if (!res.ok) throw new Error(await res.text());
+            showAlert('Product deleted');
+            await loadDashboard();
+        } catch (err) {
+            console.error(err);
+            showAlert(err.message || 'Error', 'danger');
+        }
+    }
+
+    /* ---------------- Kick things off ---------------- */
+    document.addEventListener('DOMContentLoaded', loadDashboard);
+</script>
+</body>
+</html>

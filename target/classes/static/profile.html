@@ -1,0 +1,386 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>User Profile | Polimeraas</title>-->
+<!--    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png"  type="image/x-icon">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+
+<!--    &lt;!&ndash; Bootstrap 5 &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    &lt;!&ndash; Material Design Icons &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">-->
+
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;poly-yellow: #ffb600;-->
+<!--            &#45;&#45;poly-dark: #000;-->
+<!--            &#45;&#45;poly-gray: #f8f9fa;-->
+<!--        }-->
+<!--        body {-->
+<!--            font-family: "Poppins", sans-serif;-->
+<!--            background-color: var(&#45;&#45;poly-gray);-->
+<!--        }-->
+<!--        .navbar {-->
+<!--            background: var(&#45;&#45;poly-dark);-->
+<!--        }-->
+<!--        .navbar .nav-link {-->
+<!--            color: white !important;-->
+<!--            font-weight: 500;-->
+<!--        }-->
+<!--        .navbar .nav-link:hover {-->
+<!--            color: var(&#45;&#45;poly-yellow) !important;-->
+<!--        }-->
+<!--        .card-profile {-->
+<!--            background: #fff;-->
+<!--            border-radius: .5rem;-->
+<!--            padding: 2rem;-->
+<!--            box-shadow: 0 4px 12px rgba(0,0,0,0.05);-->
+<!--        }-->
+<!--        .profile-label {-->
+<!--            font-weight: 600;-->
+<!--            color: #555;-->
+<!--        }-->
+<!--        .mdi {-->
+<!--            vertical-align: middle;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--&lt;!&ndash; NAVBAR &ndash;&gt;-->
+<!--<nav class="navbar navbar-expand-lg navbar-dark py-2">-->
+<!--    <div class="container">-->
+<!--        <a class="navbar-brand" href="/index.html">-->
+<!--            <img src="https://polimeraas.in/img/logo.png" width="160" height="52" alt="Polimeraas">-->
+<!--        </a>-->
+<!--        <div class="collapse navbar-collapse">-->
+<!--            <ul class="navbar-nav ms-auto">-->
+<!--                <li class="nav-item"><a class="nav-link" href="/index.html"><i class="mdi mdi-home"></i> Home</a></li>-->
+<!--                <li class="nav-item"><a class="nav-link" href="/user-dashboard.html"><i class="mdi mdi-cart"></i> Cart</a></li>-->
+<!--                <li class="nav-item"><a class="nav-link" href="/orders.html"><i class="mdi mdi-receipt"></i> Orders</a></li>-->
+<!--                <li class="nav-item"><a class="nav-link" href="/logout"><i class="mdi mdi-logout"></i> Logout</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
+
+<!--&lt;!&ndash; MAIN &ndash;&gt;-->
+<!--<div class="container py-5">-->
+<!--    <div class="card card-profile">-->
+<!--        <h2 class="mb-4 fw-bold">👤 User Profile</h2>-->
+<!--        <div class="row mb-3">-->
+<!--            <div class="col-md-6">-->
+<!--                <p><span class="profile-label">Username:</span> <span id="username">–</span></p>-->
+<!--                <p><span class="profile-label">Email:</span> <span id="email">–</span></p>-->
+<!--                <p><span class="profile-label">Phone Number:</span> <span id="phone">–</span></p>-->
+<!--            </div>-->
+<!--            <div class="col-md-6">-->
+<!--                <p><span class="profile-label">Full Name:</span> <span id="fullName">–</span></p>-->
+<!--                <p><span class="profile-label">Role:</span> <span id="role">–</span></p>-->
+<!--                <p><span class="profile-label">Status:</span> <span id="status" class="fw-semibold">–</span></p>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <h5 class="mt-4 mb-3 fw-bold">📍 Address</h5>-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-4">-->
+<!--                <p><span class="profile-label">City:</span> <span id="city">–</span></p>-->
+<!--            </div>-->
+<!--            <div class="col-md-4">-->
+<!--                <p><span class="profile-label">State:</span> <span id="state">–</span></p>-->
+<!--            </div>-->
+<!--            <div class="col-md-4">-->
+<!--                <p><span class="profile-label">Zipcode:</span> <span id="zipcode">–</span></p>-->
+<!--            </div>-->
+<!--            <div class="col-md-12">-->
+<!--                <p><span class="profile-label">Full Address:</span> <span id="address">–</span></p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Bootstrap JS &ndash;&gt;-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+
+<!--<script>-->
+<!--    async function loadUserProfile() {-->
+<!--        try {-->
+<!--            const res = await fetch('/api/user/profile', { credentials: 'include' });-->
+<!--            if (!res.ok) throw new Error(await res.text());-->
+
+<!--            const user = await res.json();-->
+
+<!--            document.getElementById('username').textContent = user.username;-->
+<!--            document.getElementById('email').textContent = user.email;-->
+<!--            document.getElementById('phone').textContent = user.phoneNumber || 'N/A';-->
+<!--            document.getElementById('fullName').textContent = `${user.firstname} ${user.lastname}`;-->
+<!--            document.getElementById('role').textContent = user.role;-->
+<!--            document.getElementById('status').textContent = user.active ? 'Active' : 'Inactive';-->
+<!--            document.getElementById('status').classList.add(user.active ? 'text-success' : 'text-danger');-->
+<!--            document.getElementById('city').textContent = user.city;-->
+<!--            document.getElementById('state').textContent = user.state;-->
+<!--            document.getElementById('zipcode').textContent = user.zipcode;-->
+<!--            document.getElementById('address').textContent = user.address;-->
+<!--        } catch (err) {-->
+<!--            console.error(err);-->
+<!--            alert("Could not load profile.");-->
+<!--        }-->
+<!--    }-->
+
+<!--    document.addEventListener('DOMContentLoaded', loadUserProfile);-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile | Polimeraas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="View and manage your Polimeraas user profile">
+    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png" type="image/x-icon">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --poly-yellow: #ffb600;
+            --poly-yellow-hover: #e6a800;
+            --poly-dark: #000;
+            --poly-gray: #f8f9fa;
+            --poly-text: #212529;
+            --poly-text-light: #6c757d;
+            --poly-border: #dee2e6;
+            --poly-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --poly-radius: 0.5rem;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background-color: var(--poly-gray);
+            color: var(--poly-text);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: var(--poly-dark);
+            padding: 0.55rem 1rem;
+        }
+
+        .navbar-brand img {
+            width: 120px;
+            height: auto;
+        }
+
+        .navbar .nav-link {
+            color: white !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.2s ease;
+        }
+
+        .navbar .nav-link:hover {
+            color: var(--poly-yellow) !important;
+        }
+
+        .mdi {
+            vertical-align: middle;
+            margin-right: 0.25rem;
+        }
+
+        .card-profile {
+            background: #fff;
+            border-radius: var(--poly-radius);
+            padding: 2rem;
+            box-shadow: var(--poly-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .profile-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--poly-border);
+        }
+
+        .profile-label {
+            font-weight: 600;
+            color: var(--poly-text);
+            display: inline-block;
+            min-width: 120px;
+        }
+
+        .profile-value {
+            color: var(--poly-text-light);
+        }
+
+        .status-active {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .status-inactive {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--poly-border);
+        }
+
+        @media (max-width: 768px) {
+            .card-profile {
+                padding: 1.5rem;
+            }
+
+            .profile-label {
+                display: block;
+                margin-bottom: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/index.html" aria-label="Polimeraas Home">
+<!--            <img src="https://polimeraas.in/img/logo.png" alt="Polimeraas Logo">-->
+            <img src="http://localhost:8080/uploads/Polimeras-logo-white.png" width="140" height="50" alt="Polimeraas">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/index.html" aria-label="Home">
+                        <i class="mdi mdi-home" aria-hidden="true"></i>Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user-dashboard.html" aria-label="Cart">
+                        <i class="mdi mdi-cart" aria-hidden="true"></i>Cart
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders.html" aria-label="Orders">
+                        <i class="mdi mdi-receipt" aria-hidden="true"></i>Orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" aria-label="Logout">
+                        <i class="mdi mdi-logout" aria-hidden="true"></i>Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="container py-5">
+    <div class="card card-profile">
+        <header class="profile-header">
+            <h1 class="h2 fw-bold"><i class="mdi mdi-account" aria-hidden="true"></i> User Profile</h1>
+        </header>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <span class="profile-label">Username:</span>
+                    <span id="username" class="profile-value">–</span>
+                </div>
+                <div class="mb-3">
+                    <span class="profile-label">Email:</span>
+                    <span id="email" class="profile-value">–</span>
+                </div>
+                <div class="mb-3">
+                    <span class="profile-label">Phone Number:</span>
+                    <span id="phone" class="profile-value">–</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <span class="profile-label">Full Name:</span>
+                    <span id="fullName" class="profile-value">–</span>
+                </div>
+                <div class="mb-3">
+                    <span class="profile-label">Role:</span>
+                    <span id="role" class="profile-value">–</span>
+                </div>
+                <div class="mb-3">
+                    <span class="profile-label">Status:</span>
+                    <span id="status" class="fw-semibold">–</span>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title"><i class="mdi mdi-map-marker" aria-hidden="true"></i> Address</h2>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <span class="profile-label">City:</span>
+                <span id="city" class="profile-value">–</span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <span class="profile-label">State:</span>
+                <span id="state" class="profile-value">–</span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <span class="profile-label">Zipcode:</span>
+                <span id="zipcode" class="profile-value">–</span>
+            </div>
+            <div class="col-12 mb-3">
+                <span class="profile-label">Full Address:</span>
+                <span id="address" class="profile-value">–</span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- JavaScript remains unchanged -->
+<script>
+    async function loadUserProfile() {
+        try {
+            const res = await fetch('/api/user/profile', { credentials: 'include' });
+            if (!res.ok) throw new Error(await res.text());
+
+            const user = await res.json();
+
+            document.getElementById('username').textContent = user.username;
+            document.getElementById('email').textContent = user.email;
+            document.getElementById('phone').textContent = user.phoneNumber || 'N/A';
+            document.getElementById('fullName').textContent = `${user.firstname} ${user.lastname}`;
+            document.getElementById('role').textContent = user.role;
+            document.getElementById('status').textContent = user.active ? 'Active' : 'Inactive';
+            document.getElementById('status').classList.add(user.active ? 'text-success' : 'text-danger');
+            document.getElementById('city').textContent = user.city;
+            document.getElementById('state').textContent = user.state;
+            document.getElementById('zipcode').textContent = user.zipcode;
+            document.getElementById('address').textContent = user.address;
+        } catch (err) {
+            console.error(err);
+            alert("Could not load profile.");
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadUserProfile);
+</script>
+
+</body>
+</html>

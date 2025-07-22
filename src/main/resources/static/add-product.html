@@ -1,0 +1,404 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Add Product | Polimeraas</title>-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png"  type="image/x-icon">-->
+
+<!--    &lt;!&ndash; Bootstrap 5 &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    &lt;!&ndash; Material‑Design Icons &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">-->
+
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;poly-yellow: #ffb600;-->
+<!--            &#45;&#45;poly-dark  : #000;-->
+<!--            &#45;&#45;poly-gray  : #f8f9fa;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            font-family: "Poppins", sans-serif;-->
+<!--            background: var(&#45;&#45;poly-gray);-->
+<!--            padding: 0px;-->
+<!--        }-->
+
+<!--        .navbar {-->
+<!--            background: var(&#45;&#45;poly-dark);-->
+<!--        }-->
+
+<!--        .navbar .nav-link {-->
+<!--            color: #fff !important;-->
+<!--            font-weight: 500;-->
+<!--        }-->
+
+<!--        .navbar .nav-link:hover {-->
+<!--            color: var(&#45;&#45;poly-yellow) !important;-->
+<!--        }-->
+
+<!--        .btn-yellow {-->
+<!--            background: var(&#45;&#45;poly-yellow);-->
+<!--            color: #000;-->
+<!--            border: 0;-->
+<!--        }-->
+
+<!--        .btn-yellow:hover {-->
+<!--            filter: brightness(1.05);-->
+<!--        }-->
+<!--        input{-->
+<!--            margin: 20px 0;-->
+<!--        }-->
+
+<!--        .form-container {-->
+<!--            max-width: 600px;-->
+<!--            margin: 0px auto;-->
+<!--            background: #fff;-->
+<!--            padding: 25px;-->
+<!--            border-radius: 10px;-->
+<!--            box-shadow: 0 2px 8px rgba(0,0,0,0.1);-->
+<!--        }-->
+
+<!--        #alertBox {-->
+<!--            display: none;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--&lt;!&ndash; NAVBAR &ndash;&gt;-->
+<!--<nav class="navbar navbar-expand-lg navbar-dark py-2">-->
+<!--    <div class="container">-->
+<!--        <a class="navbar-brand d-flex align-items-center" href="#">-->
+<!--            <img src="https://polimeraas.in/img/logo.png" width="160" height="52" alt="Polimeraas">-->
+<!--        </a>-->
+<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#vendorNav">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+<!--        <div id="vendorNav" class="collapse navbar-collapse">-->
+<!--            <ul class="navbar-nav ms-auto">-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="/logout"><i class="mdi mdi-logout"></i>&nbsp;Logout</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
+
+<!--&lt;!&ndash; MAIN &ndash;&gt;-->
+<!--<div class="container py-4">-->
+<!--    <h2 class="fw-bold text-center mb-4">Add Product</h2>-->
+
+<!--    <div id="alertBox" class="alert alert-success text-center" role="alert">Product added successfully!</div>-->
+
+<!--    <div class="form-container">-->
+<!--        <form id="productForm" action="/api/vendor/product" method="post" enctype="multipart/form-data">-->
+<!--            <input type="text" name="name" class="form-control" placeholder="Product Name" required>-->
+
+<!--            <textarea name="description" class="form-control" placeholder="Description" required></textarea>-->
+
+<!--            <input type="number" step="0.01" name="price" class="form-control" placeholder="Price" required>-->
+
+<!--            <select name="category" class="form-select" required>-->
+<!--                <option value="">Select Category</option>-->
+<!--                <option value="VEGETABLES">VEGETABLES</option>-->
+<!--                <option value="FRUITS">FRUITS</option>-->
+<!--                <option value="GROCERY">Grocery</option>-->
+<!--            </select>-->
+<!--            <br>-->
+<!--            <input type="text" step="0.01" name="quantityType" class="form-control" placeholder="quantityType" required>-->
+
+<!--            <input type="number" name="stockQuantity" class="form-control" placeholder="Stock Quantity" required>-->
+
+<!--            <input type="file" name="imageFile" class="form-control" accept="image/*" required>-->
+
+<!--            <div class="form-check mb-3">-->
+<!--                <input class="form-check-input" type="checkbox" name="active" id="active" checked>-->
+<!--                <label class="form-check-label" for="active">Active</label>-->
+<!--            </div>-->
+
+<!--            <button type="submit" class="btn btn-yellow w-100">Add Product</button>-->
+<!--        </form>-->
+<!--    </div>-->
+
+<!--    <div class="text-center mt-4">-->
+<!--        <a href="/vendor-dashboard.html" class="btn btn-secondary">← Back to Dashboard</a>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Bootstrap JS &ndash;&gt;-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--<script>-->
+<!--    document.getElementById('productForm').addEventListener('submit', function (e) {-->
+<!--        e.preventDefault();-->
+
+<!--        const form = e.target;-->
+<!--        const formData = new FormData(form);-->
+
+<!--        fetch(form.action, {-->
+<!--            method: 'POST',-->
+<!--            body: formData-->
+<!--        })-->
+<!--            .then(res => {-->
+<!--                if (!res.ok) throw new Error('Product creation failed');-->
+<!--                return res.json();-->
+<!--            })-->
+<!--            .then(data => {-->
+<!--                document.getElementById('alertBox').style.display = 'block';-->
+<!--                form.reset();-->
+
+<!--                setTimeout(() => {-->
+<!--                    window.location.href = "/vendor-dashboard.html";-->
+<!--                }, 2000);-->
+<!--            })-->
+<!--            .catch(err => {-->
+<!--                alert(err.message || 'Something went wrong');-->
+<!--            });-->
+<!--    });-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product | Polimeraas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Add new product to your Polimeraas vendor account">
+    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png" type="image/x-icon">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --poly-yellow: #ffb600;
+            --poly-yellow-hover: #e6a400;
+            --poly-dark: #000;
+            --poly-gray: #f8f9fa;
+            --poly-border: #dee2e6;
+            --poly-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --poly-radius: 10px;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: var(--poly-gray);
+            color: #212529;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: var(--poly-dark);
+        }
+
+        .navbar-brand img {
+            width: 160px;
+            height: auto;
+        }
+
+        .navbar .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .navbar .nav-link:hover {
+            color: var(--poly-yellow) !important;
+        }
+
+        .btn-yellow {
+            background: var(--poly-yellow);
+            color: #000;
+            border: 0;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        .btn-yellow:hover {
+            background: var(--poly-yellow-hover);
+            color: #000;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: var(--poly-radius);
+            box-shadow: var(--poly-shadow);
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            padding: 0.75rem 1rem;
+            border-radius: var(--poly-radius);
+            border: 1px solid var(--poly-border);
+            margin-bottom: 1.25rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--poly-yellow);
+            box-shadow: 0 0 0 0.25rem rgba(255, 182, 0, 0.25);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--poly-yellow);
+            border-color: var(--poly-yellow);
+        }
+
+        #alertBox {
+            display: none;
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+        }
+
+        main.container {
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
+
+        h2 {
+            font-weight: 600;
+            color: var(--poly-dark);
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark py-2">
+    <div class="container">
+        <a class="navbar-brand" href="/vendor-dashboard.html" aria-label="Polimeraas Home">
+            <img src="https://polimeraas.in/img/logo.png" width="160" height="52" alt="Polimeraas Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#vendorNav" aria-controls="vendorNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="vendorNav" class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" aria-label="Logout">
+                        <i class="mdi mdi-logout" aria-hidden="true"></i>&nbsp;Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="container py-4">
+    <h1 class="fw-bold text-center mb-4">Add Product</h1>
+
+    <div id="alertBox" class="alert alert-success text-center" role="alert" aria-live="polite">
+        Product added successfully!
+    </div>
+
+    <div class="form-container">
+        <form id="productForm" action="/api/vendor/product" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="productName" class="form-label">Product Name</label>
+                <input type="text" id="productName" name="name" class="form-control" placeholder="Enter product name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="productDescription" class="form-label">Description</label>
+                <textarea id="productDescription" name="description" class="form-control" rows="3" placeholder="Enter product description" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="productPrice" class="form-label">Price</label>
+                <input type="number" step="0.01" id="productPrice" name="price" class="form-control" placeholder="Enter price" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="productCategory" class="form-label">Category</label>
+                <select id="productCategory" name="category" class="form-select" required>
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="VEGETABLES">Vegetables</option>
+                    <option value="FRUITS">Fruits</option>
+                    <option value="GROCERY">Grocery</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="quantityType" class="form-label">Quantity Type</label>
+                <input type="text" id="quantityType" name="quantityType" class="form-control" placeholder="e.g., kg, lb, pieces" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="stockQuantity" class="form-label">Stock Quantity</label>
+                <input type="number" id="stockQuantity" name="stockQuantity" class="form-control" placeholder="Enter available quantity" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="productImage" class="form-label">Product Image</label>
+                <input type="file" id="productImage" name="imageFile" class="form-control" accept="image/*" required>
+            </div>
+
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" name="active" id="active" checked>
+                <label class="form-check-label" for="active">Product Active</label>
+            </div>
+
+            <button type="submit" class="btn btn-yellow w-100 py-2">Add Product</button>
+        </form>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/vendor-dashboard.html" class="btn btn-outline-secondary">
+            <i class="mdi mdi-arrow-left" aria-hidden="true"></i> Back to Dashboard
+        </a>
+    </div>
+</main>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('productForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => {
+                if (!res.ok) throw new Error('Product creation failed');
+                return res.json();
+            })
+            .then(data => {
+                document.getElementById('alertBox').style.display = 'block';
+                form.reset();
+
+                setTimeout(() => {
+                    window.location.href = "/vendor-dashboard.html";
+                }, 2000);
+            })
+            .catch(err => {
+                alert(err.message || 'Something went wrong');
+            });
+    });
+</script>
+</body>
+</html>

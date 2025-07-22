@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Polimeraas – Products</title>
+    <link rel="shortcut icon" href="http://localhost:8080/uploads/leaf-logo-final.png"  type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{font-family:Poppins,sans-serif;background:#f8f9fa}
+        .prod-img{height:160px;object-fit:cover;border-radius:.5rem}
+    </style>
+</head>
+<body>
+<div class="container py-4">
+    <h4 id="pageTitle" class="fw-bold mb-3"></h4>
+    <div id="grid" class="row g-3"></div>
+</div>
+
+<!-- cart helpers -->
+<script type="module" src="/js/cart.js"></script>
+
+<script type="module">
+    import { addToCart } from '/js/cart.js';
+
+    const params = new URLSearchParams(location.search);
+    const cat    = params.get('category');
+    const q      = params.get('search');
+
+    document.getElementById('pageTitle').textContent =
+        q  ? `Results for “${q}”`
+            : cat ? cat.charAt(0) + cat.slice(1).toLowerCase()
+                : 'All Products';
+
+    /* choose endpoint */
+    let endpoint = '/api/products';
+    if (cat) endpoint += '/products/' + cat;
+    if (q)   endpoint  = '/api/products/search?keyword=' + encodeURIComponent(q);
+
+    fetch(endpoint)
+        .then(r => r.json())
+        .then(list => {
+            const grid = document.getElementById('grid');
+            if (q) list = list.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));
+
+            list.forEach(p => grid.insertAdjacentHTML('beforeend', `
+        <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+          <div class="border rounded p-2 h-100 d-flex flex-column">
+            <a href="product.html?id=${p.id}" class="text-reset flex-grow-1">
+              <img src="/api/products/${p.id}/image" class="w-100 prod-img mb-2" alt="">
+              <div class="small fw-semibold lh-sm">${p.name}</div>
+            </a>
+            <div class="small">₹${p.price}</div>
+            <button class="btn btn-sm btn-outline-danger mt-auto add-btn"
+                    data-id="${p.id}">ADD</button>
+          </div>
+        </div>`));
+        });
+
+    /* delegate clicks */
+    document.addEventListener('click', e=>{
+        if(e.target.matches('.add-btn')) addToCart(e.target.dataset.id);
+    });
+</script>
+</body>
+</html>
